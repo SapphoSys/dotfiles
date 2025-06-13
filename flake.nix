@@ -78,9 +78,9 @@
         };
       };
 
-      packages = forAllSystems (pkgs: {
-        cider = pkgs.callPackage ./packages/cider.nix { };
-      });
+      # packages = forAllSystems (pkgs: {
+      #   cider = pkgs.callPackage ./packages/cider.nix { };
+      # });
 
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
     };

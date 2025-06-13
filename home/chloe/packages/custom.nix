@@ -7,8 +7,8 @@
 }:
 {
   config = lib.mkIf osConfig.settings.gui.enable {
-    home.packages = [
-      inputs.self.packages.${pkgs.system}.cider
-    ];
+    # home.packages = [
+    #   inputs.self.packages.${pkgs.system}.cider
+    # ];
   };
 }

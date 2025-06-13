@@ -20,7 +20,7 @@
   config = {
     programs = {
       dconf.enable = true; # Fix missing cursors on Firefox
-      nix-ld.dev.enable = config.settings.vscode-remote.enable; # Enable the VSCode Remote server via nix-ld
+      nix-ld.enable = config.settings.vscode-remote.enable; # Enable the VSCode Remote server via nix-ld
     };
 
     services = {

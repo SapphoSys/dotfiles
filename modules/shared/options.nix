@@ -19,7 +19,7 @@
       default = true;
     };
 
-    vscode-remote = lib.mkEnableOption "Enable the VSCode Remote server via nix-ld" // {
+    vscode-remote.enable = lib.mkEnableOption "Enable the VSCode Remote server via nix-ld" // {
       default = false;
     };
   };
