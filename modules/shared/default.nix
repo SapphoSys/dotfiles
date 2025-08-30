@@ -25,7 +25,10 @@
 
     services = {
       flatpak.enable = config.settings.flatpak.enable;
-      tailscale.enable = config.settings.tailscale.enable;
+      tailscale = {
+        enable = config.settings.tailscale.enable;
+        useRoutingFeatures = "both";
+      };
     };
 
     time = {
