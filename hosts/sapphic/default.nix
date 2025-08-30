@@ -5,6 +5,7 @@
 
   networking.networkmanager.enable = true;
   hardware.bluetooth.enable = true;
+  virtualisation.waydroid.enable = true;
 
   settings = {
     bootloader.enable = true;
