@@ -26,11 +26,6 @@ lib.optionals osConfig.settings.gui.enable (with pkgs; [
 
   # dev tools
   bun
-  jetbrains.webstorm
-  jetbrains.idea-ultimate
-  jetbrains.pycharm-professional
-  jetbrains.rider
-  jetbrains.datagrip
   zed-editor
   httpie-desktop
 
@@ -39,6 +34,7 @@ lib.optionals osConfig.settings.gui.enable (with pkgs; [
 
   # games
   prismlauncher
+  xivlauncher
 
   # other GUI apps
   kdePackages.akregator
