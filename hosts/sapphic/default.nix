@@ -6,9 +6,10 @@
   networking.networkmanager.enable = true;
 
   settings = {
-    kde.enable = true;
-    gui.enable = true;
     bootloader.enable = true;
+    gui.enable = true;
+    kde.enable = true;
+    solaar.enable = true;
 
     hardware = {
       nvidia.enable = true;

@@ -40,6 +40,14 @@
       url = "github:ahbnr/nixos-06cb-009a-fingerprint-sensor/24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Logitech config tool
+    solaar = {
+      url = "github:Svenum/Solaar-Flake/main"; # For latest stable version
+      #url = "https://flakehub.com/f/Svenum/Solaar-Flake/0.1.1.tar.gz"; # uncomment line for solaar version 1.1.13
+      #url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -47,6 +55,7 @@
       nixos-hardware,
       nixos-wsl,
       nix-ld,
+      solaar,
       ...
     }@inputs:
     let
@@ -62,7 +71,11 @@
       # NixOS configurations
       nixosConfigurations = lib.mapAttrs lib.mkSystem {
         eris = { };
-        sapphic = { };
+        sapphic = {
+          modules = [
+            solaar.nixosModules.default
+          ];
+        };
 
         lavender = {
           modules = [
