@@ -19,14 +19,14 @@
     hardware.nvidia = {
       open = false;
 
-      package = config.boot.kernelPackages.nvidiaPackages.production;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
       powerManagement = {
         enable = false;
         finegrained = true;
       };
 
-      # Ensure the kernel doesn't tear down the card/driver prior to X startup due to the card powering down.
-      nvidiaPersistenced = true;
+      # # Ensure the kernel doesn't tear down the card/driver prior to X startup due to the card powering down.
+      # nvidiaPersistenced = true;
 
       # the following is required for amdgpu/nvidia pairings.
       modesetting.enable = true;
@@ -34,7 +34,7 @@
         offload.enable = true;
 
         # Bus ID of AMD and NVIDIA GPUs.
-        amdgpuBusId = "PCI:5:0:0";
+        amdgpuBusId = "PCI:6:0:0";
         nvidiaBusId = "PCI:1:0:0";
       };
     };
