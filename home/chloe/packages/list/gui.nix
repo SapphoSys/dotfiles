@@ -39,5 +39,4 @@ lib.optionals osConfig.settings.gui.enable (with pkgs; [
   # other GUI apps
   kdePackages.akregator
   obs-studio
-  miru
 ])
