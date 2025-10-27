@@ -1,3 +1,5 @@
+# From https://github.com/isabelroses/dotfiles/blob/main/modules/home/docs.nix
+
 { lib, ... }:
 let
   inherit (lib.attrsets) mapAttrs;

@@ -1,4 +1,5 @@
-{ pkgs, ... }:
+{ lib, osConfig, pkgs, ... }:
+
 {
   xdg.configFile = {
     # 1Password configuration
@@ -10,8 +11,9 @@
   };
 
   home.file = {
-    # Catppuccin theme for Konsole
-    ".local/share/konsole/catppuccin-mocha.colorscheme" = {
+    # Catppuccin theme for Konsole (KDE terminal)
+    # Only on systems with KDE enabled
+    ".local/share/konsole/catppuccin-mocha.colorscheme" = lib.mkIf (osConfig.settings.desktop.kde.enable or false) {
       source =
         pkgs.fetchFromGitHub {
           owner = "catppuccin";

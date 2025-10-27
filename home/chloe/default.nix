@@ -1,10 +1,10 @@
 {
   imports = [
-    ./apps
     ./catppuccin.nix
     ./docs.nix
     ./files.nix
     ./packages
+    ./programs
   ];
 
   xdg.enable = true;

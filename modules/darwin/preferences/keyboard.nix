@@ -1,0 +1,3 @@
+{
+  system.keyboard.enableKeyMapping = true;
+}

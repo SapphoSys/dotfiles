@@ -1,13 +1,8 @@
 {
-  wsl = {
-    enable = true;
-    defaultUser = "chloe";
-  };
-
   settings = {
-    flatpak.enable = false;
-
-    vscode-remote.enable = true;
+    profiles = {
+      graphical.enable = false;
+    };
   };
 
   system.stateVersion = "23.11"; # Initial NixOS version

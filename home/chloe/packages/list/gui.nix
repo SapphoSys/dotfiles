@@ -1,42 +1,31 @@
 { pkgs, lib, osConfig }:
 
-lib.optionals osConfig.settings.gui.enable (with pkgs; [
-  # cloud
-  owncloud-client
+let
+  # Common GUI packages available on all platforms
+  commonPackages = with pkgs; [
+    # cloud
+    owncloud-client
 
-  # messengers
-  telegram-desktop
-  vesktop
+    # messengers
+    telegram-desktop
+    vesktop
 
-  # notes
-  obsidian
+    # notes
+    obsidian
 
-  # kde theme override
-  (catppuccin-kde.override {
-    flavour   = [ "mocha" ];
-    accents   = [ "pink" ];
-    winDecStyles = [ "classic" ];
-  })
+    # dev tools
+    zed-editor
+    httpie-desktop
 
-  # fonts
-  iosevka
-  inter
-  atkinson-hyperlegible
-  nerd-fonts.jetbrains-mono
+    # mail
+    thunderbird
 
-  # dev tools
-  bun
-  zed-editor
-  httpie-desktop
+    # games
+    prismlauncher
+    xivlauncher
 
-  # mail
-  thunderbird
-
-  # games
-  prismlauncher
-  xivlauncher
-
-  # other GUI apps
-  kdePackages.akregator
-  obs-studio
-])
+    # other GUI apps
+    obs-studio
+    _1password-gui
+  ];
+in lib.optionals osConfig.settings.profiles.graphical.enable commonPackages

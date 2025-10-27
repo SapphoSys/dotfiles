@@ -11,9 +11,8 @@ let
 in
 {
   imports = [
-    ./autostart.nix    # Apps that will run on boot
-    ./custom.nix       # Custom packages
-    ./scripts.nix      # Scripts
+    ./autostart.nix
+    ./scripts.nix
   ];
 
   config = {
