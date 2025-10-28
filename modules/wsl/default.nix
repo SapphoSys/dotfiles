@@ -12,6 +12,6 @@
     };
     
     # Allow opening files and links in Windows from WSL
-    environment.variable.BROWSER = "wsl-open";
+    environment.variables.BROWSER = "wsl-open";
   };
 }
