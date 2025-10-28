@@ -65,6 +65,10 @@
 
       easy-hosts = {
         path = ./hosts;
+
+        additionalClasses = {
+          wsl = "nixos";
+        };
         
         shared = {
           modules = [
@@ -97,7 +101,7 @@
 
           solstice = {
             arch = "x86_64";
-            class = "nixos";
+            class = "wsl";
             tags = [ "wsl" ];
           };
         };
