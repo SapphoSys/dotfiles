@@ -1,6 +1,6 @@
 {
   imports = [
     ./flatpak.nix
-    ./tailscale.nix
+    ./ssh.nix
   ];
 }
