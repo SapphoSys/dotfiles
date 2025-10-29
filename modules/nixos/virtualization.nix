@@ -14,6 +14,6 @@
   config = {
     virtualisation.docker.enable = config.settings.docker.enable;
 
-    users.users.chloe.extraGroups = lib.mkForce (lib.unique (config.users.users.chloe.extraGroups ++ [ "docker" ]));
+    users.users.chloe.extraGroups = [ "docker" ];
   };
 }

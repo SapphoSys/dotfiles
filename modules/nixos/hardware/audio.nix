@@ -17,6 +17,6 @@
       pulse.enable = true;
     };
 
-    users.users.chloe.extraGroups = lib.mkForce (lib.unique (config.users.users.chloe.extraGroups ++ [ "audio" ]));
+    users.users.chloe.extraGroups = [ "audio" ];
   };
 }
