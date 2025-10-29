@@ -5,9 +5,7 @@
     inputs.solaar.nixosModules.solaar
   ];
 
-  options.settings.solaar.enable = lib.mkEnableOption "Enable Solaar" // {
-    default = false;
-  };
+  options.settings.solaar.enable = lib.mkEnableOption "Enable Solaar";
 
   config = lib.mkIf config.settings.solaar.enable {
     services.solaar = {
