@@ -17,16 +17,16 @@
         description = "A list of command-line flags that will be passed to the Tailscale daemon";
       };
 
-      isClient = lib.mkOption {
-        type = lib.types.bool;
-        default = config.settings.tailscale.enable;
-        description = "Whether this Tailscale instance is a client";
-      };
-
       isServer = lib.mkOption {
         type = lib.types.bool;
-        default = !config.settings.tailscale.isClient || config.settings.profiles.server.enable;
+        default = config.settings.profiles.server.enable;
         description = "Whether this Tailscale instance is a server/relay node";
+      };
+
+      isClient = lib.mkOption {
+        type = lib.types.bool;
+        default = config.settings.tailscale.enable && !config.settings.tailscale.isServer;
+        description = "Whether this Tailscale instance is a client";
       };
     };
   };
