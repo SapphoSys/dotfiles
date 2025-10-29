@@ -6,8 +6,10 @@
 
 {
   options = {
-    settings.docker.enable = lib.mkEnableOption "Enable Docker" // {
+    settings.docker.enable = lib.mkOption {
+      type = lib.types.bool;
       default = true;
+      description = "Enable Docker virtualization support.";
     };
   };
   
