@@ -93,6 +93,12 @@
             tags = [ "laptop" ];
           };
 
+          dullscythe = {
+            arch = "x86_64";
+            class = "nixos";
+            tags = [ "server" ];
+          };
+
           juniper = {
             arch = "aarch64";
             class = "darwin";
