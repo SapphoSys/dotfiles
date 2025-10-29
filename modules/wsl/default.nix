@@ -1,7 +1,7 @@
 {
   imports = [
-    ../../home
     ./extras.nix
+    ../nixos
     ./packages.nix
   ];
 
