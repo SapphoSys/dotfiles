@@ -18,7 +18,6 @@
 
     hardware = {
       audio.enable = true;
-      bluetooth.enable = true;
       nvidia.enable = true;
     };
   };
