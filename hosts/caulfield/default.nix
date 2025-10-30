@@ -10,8 +10,6 @@
       kde.enable = true;
     };
 
-    bootloader.enable = true;
-
     profiles = {
       graphical.enable = true;
       laptop.enable = true;
