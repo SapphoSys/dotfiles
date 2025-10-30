@@ -6,16 +6,16 @@
 
 {
   options = {
-    settings.docker.enable = lib.mkOption {
+    settings.virtualization.docker.enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Enable Docker virtualization support.";
     };
   };
-  
-  config = {
-    virtualisation.docker.enable = config.settings.docker.enable;
 
-    users.users.chloe.extraGroups = [ "docker" ];
+  config = {
+    virtualisation.docker.enable = config.settings.virtualization.docker.enable;
+
+    users.users.chloe.extraGroups = lib.mkIf config.settings.virtualization.docker.enable [ "docker" ];
   };
 }
