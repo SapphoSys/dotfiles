@@ -1,6 +1,7 @@
 {
   imports = [
     ./hardware.nix
+    ../../services
   ];
 
   settings = {
