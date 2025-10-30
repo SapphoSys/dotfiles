@@ -5,9 +5,9 @@
     inputs.solaar.nixosModules.solaar
   ];
 
-  options.settings.solaar.enable = lib.mkEnableOption "Enable Solaar";
+  options.settings.software.solaar.enable = lib.mkEnableOption "Enable Solaar";
 
-  config = lib.mkIf config.settings.solaar.enable {
+  config = lib.mkIf config.settings.software.solaar.enable {
     services.solaar = {
       enable = true;
       batteryIcons = "symbolic";

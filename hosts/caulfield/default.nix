@@ -9,11 +9,14 @@
     desktop.kde.enable = true;
 
     bootloader.enable = true;
-    solaar.enable = true;
 
     profiles = {
       graphical.enable = true;
       laptop.enable = true;
+    };
+
+    software = {
+      solaar.enable = true;
     };
 
     hardware = {
