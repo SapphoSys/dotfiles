@@ -76,19 +76,12 @@
         };
 
         shared = {
-          modules = [
-            # Base modules (platform-agnostic)
-            ./modules/base
-          ];
-          specialArgs = {
-            inherit inputs;
-          };
+          modules = [ ./modules/base ];
+          specialArgs = { inherit inputs; };
         };
 
         perClass = class: {
-          modules = [
-            ./modules/${class}/default.nix
-          ];
+          modules = [ ./modules/${class}/default.nix ];
         };
 
         hosts = {
