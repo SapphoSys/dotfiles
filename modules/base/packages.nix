@@ -7,5 +7,6 @@
     unzip
     nil
     jq
+    nixfmt
   ];
 }

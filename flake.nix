@@ -57,11 +57,16 @@
         inputs.easy-hosts.flakeModule
       ];
 
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
-      perSystem = { pkgs, ... }: {
-        formatter = pkgs.nixfmt-rfc-style;
-      };
+      perSystem =
+        { pkgs, ... }:
+        {
+          formatter = pkgs.nixfmt;
+        };
 
       easy-hosts = {
         path = ./hosts;
@@ -69,7 +74,7 @@
         additionalClasses = {
           wsl = "nixos";
         };
-        
+
         shared = {
           modules = [
             # Base modules (platform-agnostic)
