@@ -3,11 +3,14 @@
     ./hardware.nix
   ];
 
-  virtualisation.waydroid.enable = true;
-
   settings = {
     desktop = {
       kde.enable = true;
+    };
+
+    hardware = {
+      audio.enable = true;
+      nvidia.enable = true;
     };
 
     profiles = {
@@ -19,9 +22,8 @@
       solaar.enable = true;
     };
 
-    hardware = {
-      audio.enable = true;
-      nvidia.enable = true;
+    virtualization = {
+      waydroid.enable = true;
     };
   };
 
