@@ -39,6 +39,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## Secrets management
+    ragenix = {
+      url = "github:yaxitech/ragenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ## Logitech config tool
     solaar = {
       url = "github:Svenum/Solaar-Flake/main";
