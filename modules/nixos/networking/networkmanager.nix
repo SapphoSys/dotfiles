@@ -10,5 +10,6 @@
     ];
   };
 
+  # On rebuilds, NetworkManager's wait online process often fails, so we disable it.
   systemd.services.NetworkManager-wait-online.enable = false;
 }
