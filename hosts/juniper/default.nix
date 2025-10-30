@@ -1,3 +1,3 @@
 {
-  system.stateVersion = 6; # initial nix-darwin version
+  system.stateVersion = 6; # Initial nix-darwin version
 }
