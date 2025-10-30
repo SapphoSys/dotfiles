@@ -4,13 +4,9 @@
   ];
 
   settings = {
-    bootloader = {
+    bootloader.grub = {
       enable = true;
-      
-      grub = {
-        enable = true;
-        device = "/dev/vda";
-      };
+      device = "/dev/vda";
     };
 
     profiles.server.enable = true;

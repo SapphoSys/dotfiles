@@ -1,5 +1,9 @@
 { lib, ... }:
 
 {
-  options.settings.bootloader.enable = lib.mkEnableOption "Enable bootloader configuration";
+  options.settings.bootloader.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = "Enable the system bootloader.";
+  };
 }
