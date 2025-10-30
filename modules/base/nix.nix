@@ -1,3 +1,5 @@
+# Partially taken from https://github.com/isabelroses/dotfiles/blob/main/modules/base/nix/nix.nix
+
 {
   nix = {
     # Set up Nix's garbage collector to run automatically.
@@ -46,6 +48,6 @@
   };
 
   # Allow unfree packages. 
-  # This is sadly not enough as I still have to pass the --impure flag. 😒
+  # This is sadly not enough as I still have to pass the --impure flag. Yawn.
   nixpkgs.config.allowUnfree = true;
 }
