@@ -11,14 +11,13 @@
     sharedModules = [
       {
         home.stateVersion = "23.11";
-        
 
         # let HM manage itself when in standalone mode
         programs.home-manager.enable = true;
       }
 
       (
-        { osConfig, ... }: 
+        { osConfig, ... }:
 
         # reload system units when changing configs (only on Linux systems with systemd)
         {
