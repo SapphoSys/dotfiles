@@ -7,13 +7,13 @@
       default = true;
       description = "Enable SSH service";
     };
-    
+
     passwordAuthentication = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "Allow password authentication";
     };
-    
+
     permitRootLogin = lib.mkOption {
       type = lib.types.str;
       default = "no";

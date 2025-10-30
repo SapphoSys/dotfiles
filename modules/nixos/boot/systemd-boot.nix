@@ -9,11 +9,13 @@
     };
   };
 
-  config = lib.mkIf (config.settings.bootloader.enable && config.settings.bootloader.systemd-boot.enable) {
-    boot.loader = {
-      timeout = 2;
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
+  config =
+    lib.mkIf (config.settings.bootloader.enable && config.settings.bootloader.systemd-boot.enable)
+      {
+        boot.loader = {
+          timeout = 2;
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+        };
+      };
 }

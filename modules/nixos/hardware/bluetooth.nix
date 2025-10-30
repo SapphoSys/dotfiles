@@ -1,4 +1,9 @@
-{ lib, config, types, ... }:
+{
+  lib,
+  config,
+  types,
+  ...
+}:
 
 {
   options.hardware.bluetooth.enable = {

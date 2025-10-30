@@ -10,7 +10,7 @@
 
     # Optimize symlinks.
     optimise.automatic = true;
-    
+
     settings = {
       # Literally a CVE waiting to happen.
       accept-flake-config = false;
@@ -47,7 +47,7 @@
     };
   };
 
-  # Allow unfree packages. 
+  # Allow unfree packages.
   # This is sadly not enough as I still have to pass the --impure flag. Yawn.
   nixpkgs.config.allowUnfree = true;
 }

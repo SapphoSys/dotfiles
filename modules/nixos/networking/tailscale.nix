@@ -30,7 +30,7 @@
       };
     };
   };
-  
+
   config = lib.mkIf config.settings.tailscale.enable {
     settings.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
 
@@ -43,7 +43,9 @@
       enable = true;
       permitCertUid = "root";
       useRoutingFeatures = lib.mkDefault "server";
-      extraUpFlags = config.settings.tailscale.defaultFlags ++ lib.optionals config.settings.tailscale.isServer [ "--advertise-exit-node" ];
+      extraUpFlags =
+        config.settings.tailscale.defaultFlags
+        ++ lib.optionals config.settings.tailscale.isServer [ "--advertise-exit-node" ];
     };
 
     # A server cannot be a client and vice versa

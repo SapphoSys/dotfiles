@@ -2,7 +2,7 @@
   # Enable Homebrew
   homebrew = {
     enable = true;
-    
+
     # Update Homebrew and upgrade all packages on activation
     onActivation = {
       autoUpdate = true;
@@ -11,7 +11,7 @@
     };
 
     # Taps (third-party repositories)
-    taps = [];
+    taps = [ ];
 
     # Formulae (CLI tools)
     brews = [
