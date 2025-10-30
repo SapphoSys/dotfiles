@@ -3,10 +3,10 @@
     ../../home
     ./boot
     ./catppuccin.nix
+    ./desktop
     ./environment
     ./extras.nix
     ./hardware
-    ./kde.nix
     ./networking
     ./packages.nix
     ./polkit.nix

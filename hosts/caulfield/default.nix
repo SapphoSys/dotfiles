@@ -6,7 +6,9 @@
   virtualisation.waydroid.enable = true;
 
   settings = {
-    desktop.kde.enable = true;
+    desktop = {
+      kde.enable = true;
+    };
 
     bootloader.enable = true;
 
