@@ -12,9 +12,10 @@
 
   config = lib.mkIf (config.settings.bootloader.enable && config.settings.bootloader.grub.enable) {
     boot.loader = {
-      grub.enable = true;
-      grub.version = 2;
-      grub.device = config.settings.bootloader.grub.device;
+      grub = {
+        enable = true;
+        device = config.settings.bootloader.grub.device;
+      };
       systemd-boot.enable = lib.mkForce false;
     };
   };
