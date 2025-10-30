@@ -9,7 +9,10 @@
       device = "/dev/vda";
     };
 
-    profiles.server.enable = true;
+    profiles = {
+      headless.enable = true;
+      server.enable = true;
+    };
   };
 
   system.stateVersion = "25.05";
