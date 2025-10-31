@@ -8,5 +8,6 @@
     nil
     jq
     nixfmt
+    just
   ];
 }
