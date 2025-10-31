@@ -29,15 +29,14 @@
     '';
   };
 
-  systemd.services.caddy = {
-    serviceConfig = {
-      EnvironmentFile = config.age.secrets.caddy_env.path;
-    };
+  systemd.services.caddy.serviceConfig = {
+    EnvironmentFile = config.age.secrets.caddy_env.path;
   };
 
-  networking.firewall.allowedTCPPorts = [
+  settings.firewall.allowedTCPPorts = [
     80
     443
   ];
-  networking.firewall.allowedUDPPorts = [ 443 ];
+
+  settings.firewall.allowedUDPPorts = [ 443 ];
 }

@@ -26,5 +26,5 @@
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [ 4040 ];
+  settings.firewall.allowedTCPPorts = [ 4040 ];
 }
