@@ -165,6 +165,15 @@
                 "UCHC4G4X-OR5WkY-IquRGa3Q"
               ];
             }
+            {
+              type = "reddit";
+              subreddit = "selfhosted";
+              "app-auth" = {
+                name = "\${REDDIT_APP_NAME}";
+                id = "\${REDDIT_APP_CLIENT_ID}";
+                secret = "\${REDDIT_APP_SECRET}";
+              };
+            }
           ];
         }
         {

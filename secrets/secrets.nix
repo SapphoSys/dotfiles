@@ -9,4 +9,5 @@ let
 in
 {
   "caddy.age".publicKeys = keys;
+  "glance.age".publicKeys = keys;
 }
