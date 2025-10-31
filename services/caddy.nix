@@ -27,14 +27,6 @@
         encode zstd gzip
       }
     '';
-    virtualHosts."home.sappho.systems" = {
-      listenAddresses = [ "::" ];
-      extraConfig = ''
-        import common
-        import tls_cloudflare
-        reverse_proxy http://localhost:4040
-      '';
-    };
   };
 
   systemd.services.caddy = {

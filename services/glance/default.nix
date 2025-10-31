@@ -16,5 +16,15 @@
   };
 
   environment.etc."glance.yml".text = builtins.readFile ./glance.yml;
+
+  services.caddy.virtualHosts."home.sappho.systems" = {
+    listenAddresses = [ "::" ];
+    extraConfig = ''
+      import common
+      import tls_cloudflare
+      reverse_proxy http://localhost:4040
+    '';
+  };
+
   networking.firewall.allowedTCPPorts = [ 4040 ];
 }
