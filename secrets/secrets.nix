@@ -8,5 +8,5 @@ let
   ];
 in
 {
-  "caddy.env.age".publicKeys = keys;
+  "caddy.age".publicKeys = keys;
 }

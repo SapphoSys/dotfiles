@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  age.secrets.caddy_env = {
-    file = ../../secrets/caddy.env.age;
+  age.secrets.caddy = {
+    file = ../../secrets/caddy.age;
     mode = "600";
   };
 
@@ -12,7 +12,7 @@
       plugins = [ "github.com/caddy-dns/cloudflare@v0.2.1" ];
       hash = "sha256-XwZ0Hkeh2FpQL/fInaSq+/3rCLmQRVvwBM0Y1G1FZNU=";
     };
-    environmentFile = config.age.secrets.caddy_env.path;
+    environmentFile = config.age.secrets.caddy.path;
     globalConfig = ''
       email chloe@sapphic.moe
     '';
@@ -30,7 +30,7 @@
   };
 
   systemd.services.caddy.serviceConfig = {
-    EnvironmentFile = config.age.secrets.caddy_env.path;
+    EnvironmentFile = config.age.secrets.caddy.path;
   };
 
   settings.firewall.allowedTCPPorts = [
