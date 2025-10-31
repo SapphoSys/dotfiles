@@ -2,7 +2,7 @@
 
 {
   age.secrets.caddy_env = {
-    file = ../secrets/caddy.env.age;
+    file = ../../secrets/caddy.env.age;
     mode = "600";
   };
 
