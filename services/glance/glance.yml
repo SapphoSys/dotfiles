@@ -107,6 +107,8 @@ pages:
               - UCQD3awTLw9i8Xzh85FKsuJA # SovietWomble
               - UCBa659QWEk1AI4Tg--mrJ2A # Tom Scott
               - UCHC4G4X-OR5WkY-IquRGa3Q # Tom Scott plus
+          - type: reddit
+            subreddit: selfhosted
 
       - size: small
         widgets:
