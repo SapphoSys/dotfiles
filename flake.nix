@@ -3,7 +3,7 @@
 
   inputs = {
     # Packages
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Flakes
     flake-parts.url = "github:hercules-ci/flake-parts";
