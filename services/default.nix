@@ -1,6 +1,6 @@
 {
   imports = [
-    ./caddy.nix
-    ./glance/default.nix
+    ./caddy
+    ./glance
   ];
 }
