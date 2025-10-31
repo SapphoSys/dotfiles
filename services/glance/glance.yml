@@ -120,7 +120,7 @@ pages:
             sites:
               - title: Outline
                 url: https://wiki.sappho.systems
-                icon: https://gist.githubusercontent.com/SapphicMoe/06893190ae9df097c7a3a87afebaf7c9/raw/9a6df215b442a02d6bd1ea5581533f91cb66c1d0/test.svg
+                icon: https://github.com/outline.png
               - title: Owncloud
                 url: https://cloud.sappho.systems
                 icon: si:owncloud
