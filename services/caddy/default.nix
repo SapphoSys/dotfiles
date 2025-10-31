@@ -29,10 +29,6 @@
     '';
   };
 
-  systemd.services.caddy.serviceConfig = {
-    EnvironmentFile = config.age.secrets.caddy.path;
-  };
-
   settings.firewall.allowedTCPPorts = [
     80
     443
