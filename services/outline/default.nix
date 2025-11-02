@@ -117,29 +117,12 @@
     extraConfig = ''
       import common
       import tls_cloudflare
-      reverse_proxy http://localhost:9000 {
-        transport http {
-          versions 1.1
-        }
-      }
-    '';
-  };
-
-  services.caddy.virtualHosts."minio-admin.sappho.systems" = {
-    extraConfig = ''
-      import common
-      import tls_cloudflare
-      reverse_proxy http://localhost:9001 {
-        transport http {
-          versions 1.1
-        }
-      }
+      reverse_proxy http://localhost:9000
     '';
   };
 
   settings.firewall.allowedTCPPorts = [
     3300
     9000
-    9001
   ];
 }
