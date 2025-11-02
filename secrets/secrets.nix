@@ -14,5 +14,11 @@ in
   "caddy.age".publicKeys = keys;
   "glance.age".publicKeys = keys;
   "lanyard.age".publicKeys = keys;
+  "minio.age".publicKeys = keys;
   "ntfy.age".publicKeys = keys;
+  "outline/client-secret.age".publicKeys = keys;
+  "outline/minio-password.age".publicKeys = keys;
+  "outline/secret-key.age".publicKeys = keys;
+  "outline/smtp-password.age".publicKeys = keys;
+  "outline/utils-secret.age".publicKeys = keys;
 }
