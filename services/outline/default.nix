@@ -127,5 +127,9 @@
     '';
   };
 
-  settings.firewall.allowedTCPPorts = [ 3300 ];
+  settings.firewall.allowedTCPPorts = [
+    3300
+    9000
+    9001
+  ];
 }
