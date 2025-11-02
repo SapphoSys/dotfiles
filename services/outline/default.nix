@@ -115,25 +115,15 @@
 
   services.caddy.virtualHosts."minio.sappho.systems" = {
     extraConfig = ''
-      import common
       import tls_cloudflare
-      reverse_proxy http://localhost:9000 {
-        transport http {
-          versions 1.1
-        }
-      }
+      reverse_proxy http://localhost:9000
     '';
   };
 
   services.caddy.virtualHosts."minio-admin.sappho.systems" = {
     extraConfig = ''
-      import common
       import tls_cloudflare
-      reverse_proxy http://localhost:9001 {
-        transport http {
-          versions 1.1
-        }
-      }
+      reverse_proxy http://localhost:9001
     '';
   };
 
