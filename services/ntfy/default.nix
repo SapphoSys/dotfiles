@@ -1,0 +1,47 @@
+{ config, ... }:
+
+{
+  age.secrets.ntfy = {
+    file = ../../secrets/ntfy.age;
+    mode = "600";
+  };
+
+  services.ntfy-sh = {
+    enable = true;
+    user = "ntfy";
+    group = "ntfy";
+
+    settings = {
+      base-url = "https://notify.sappho.systems";
+      behind-proxy = true;
+      listen-http = "7070";
+
+      cache-file = "/var/lib/ntfy/cache.db";
+      attachment-cache-dir = "/var/lib/ntfy/attachments";
+      attachment-total-size-limit = "2G";
+      attachment-file-size-limit = "100M";
+      attachment-expiry-duration = "20h";
+
+      enable-login = true;
+      auth-file = "/var/lib/ntfy/auth.db";
+      auth-default-access = "deny-all";
+
+      web-push-public-key = "BHJ3WXz88sWJHp-7d3O5zhkUT1yiTHQlRyWYFbmQbOJU4b5pDIhwL7hqJKXTIbCp0UFc-SfR5Rc08P8wP9abt7A";
+      web-push-private-key = "${config.age.secrets.ntfy.path}";
+      web-push-file = "/var/lib/ntfy/webpush.db";
+      web-push-email-address = "chloe@sapphic.moe";
+    };
+  };
+
+  services.caddy.virtualHosts."notify.sappho.systems" = {
+    listenAddresses = [ "::" ];
+    extraConfig = ''
+      import common
+      import tls_cloudflare
+      reverse_proxy http://127.0.0.1:7070
+    '';
+  };
+
+  # Firewall
+  settings.firewall.allowedTCPPorts = [ 7070 ];
+}

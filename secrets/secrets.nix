@@ -14,4 +14,5 @@ in
   "caddy.age".publicKeys = keys;
   "glance.age".publicKeys = keys;
   "lanyard.age".publicKeys = keys;
+  "ntfy.age".publicKeys = keys;
 }

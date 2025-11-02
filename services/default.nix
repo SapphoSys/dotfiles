@@ -4,5 +4,6 @@
     ./glance
     ./bluesky-pds
     ./lanyard
+    ./ntfy
   ];
 }
