@@ -127,7 +127,7 @@
       import tls_cloudflare
       reverse_proxy http://localhost:9001 {
         transport http {
-          versions h2c 1.1
+          versions 1.1
         }
       }
     '';
