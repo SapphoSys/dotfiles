@@ -10,7 +10,7 @@
 
   services.bluesky-pds = {
     enable = true;
-    pdsadmin = true;
+    pdsadmin.enable = true;
     settings = {
       PDS_HOSTNAME = "pds.sappho.systems";
       PDS_PORT = 3333;
