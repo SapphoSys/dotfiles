@@ -16,14 +16,11 @@
       behind-proxy = true;
       listen-http = "7070";
 
-      cache-file = "/var/lib/ntfy/cache.db";
-      attachment-cache-dir = "/var/lib/ntfy/attachments";
       attachment-total-size-limit = "2G";
       attachment-file-size-limit = "100M";
       attachment-expiry-duration = "20h";
 
       enable-login = true;
-      auth-file = "/var/lib/ntfy/auth.db";
       auth-default-access = "deny-all";
 
       web-push-public-key = "BHJ3WXz88sWJHp-7d3O5zhkUT1yiTHQlRyWYFbmQbOJU4b5pDIhwL7hqJKXTIbCp0UFc-SfR5Rc08P8wP9abt7A";
