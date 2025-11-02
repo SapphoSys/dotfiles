@@ -19,11 +19,14 @@
     image = "phineas/lanyard:latest";
     ports = [ "4001:4001" ];
     environment = {
-      REDIS_HOST = "localhost";
+      REDIS_HOST = "127.0.0.1";
     };
     environmentFiles = [ config.age.secrets.lanyard.path ];
     autoRemoveOnStop = false;
-    extraOptions = [ "--restart=always" ];
+    extraOptions = [
+      "--restart=always"
+      "--network=host"
+    ];
   };
 
   services.caddy.virtualHosts."lanyard.sappho.systems" = {
