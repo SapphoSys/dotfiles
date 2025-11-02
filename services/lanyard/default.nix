@@ -2,7 +2,11 @@
 
 {
   # Redis service (new style)
-  services.redis.servers."lanyard".enable = true;
+  services.redis.servers."lanyard" = {
+    enable = true;
+    port = 6379;
+    bind = "127.0.0.1";
+  };
 
   # Age secret for Discord bot token
   age.secrets.lanyard = {
