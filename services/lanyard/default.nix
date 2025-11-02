@@ -18,6 +18,7 @@
       REDIS_HOST = "localhost";
     };
     environmentFiles = [ config.age.secrets.lanyard.path ];
+    autoRemoveOnStop = false;
     extraOptions = [ "--restart=always" ];
   };
 
