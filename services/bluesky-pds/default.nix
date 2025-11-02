@@ -35,4 +35,6 @@
       reverse_proxy http://127.0.0.1:3333
     '';
   };
+
+  settings.firewall.allowedTCPPorts = [ 3333 ];
 }
