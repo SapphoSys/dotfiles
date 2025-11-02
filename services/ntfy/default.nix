@@ -14,7 +14,7 @@
     settings = {
       base-url = "https://notify.sappho.systems";
       behind-proxy = true;
-      listen-http = "7070";
+      listen-http = ":7070";
 
       attachment-total-size-limit = "2G";
       attachment-file-size-limit = "100M";
