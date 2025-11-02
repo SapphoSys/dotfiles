@@ -1,10 +1,12 @@
 let
-  key1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJug+9rnFngnFQpY0lAO0NuVBhDCcJc5imPHazgOSTTx";
-  key2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICM6XP+CNc2CStEDe/W4LfkcRcG98obQiM2aqnydCRbX";
+  age = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJflwNs6B8GIVoGEZkeb56lqHq3qbWYp+PJZtvIGzVlZ";
+  auth = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJug+9rnFngnFQpY0lAO0NuVBhDCcJc5imPHazgOSTTx";
+  sign = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICM6XP+CNc2CStEDe/W4LfkcRcG98obQiM2aqnydCRbX";
 
   keys = [
-    key1
-    key2
+    age
+    auth
+    sign
   ];
 in
 {
