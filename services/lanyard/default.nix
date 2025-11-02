@@ -27,7 +27,6 @@
   };
 
   services.caddy.virtualHosts."lanyard.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare

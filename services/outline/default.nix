@@ -106,7 +106,6 @@
   };
 
   services.caddy.virtualHosts."wiki.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare
@@ -115,7 +114,6 @@
   };
 
   services.caddy.virtualHosts."minio.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare

@@ -31,7 +31,6 @@
   };
 
   services.caddy.virtualHosts."notify.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare

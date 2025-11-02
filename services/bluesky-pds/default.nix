@@ -19,7 +19,6 @@
   };
 
   services.caddy.virtualHosts."pds.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare
@@ -28,7 +27,6 @@
   };
 
   services.caddy.virtualHosts."*.pds.sappho.systems" = {
-    listenAddresses = [ "::" ];
     extraConfig = ''
       import common
       import tls_cloudflare
