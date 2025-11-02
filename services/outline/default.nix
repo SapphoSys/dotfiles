@@ -120,9 +120,4 @@
       reverse_proxy http://localhost:9000
     '';
   };
-
-  settings.firewall.allowedTCPPorts = [
-    3300
-    9000
-  ];
 }
