@@ -25,7 +25,7 @@
 
       web-push-public-key = "BHJ3WXz88sWJHp-7d3O5zhkUT1yiTHQlRyWYFbmQbOJU4b5pDIhwL7hqJKXTIbCp0UFc-SfR5Rc08P8wP9abt7A";
       web-push-private-key = "${config.age.secrets.ntfy.path}";
-      web-push-file = "/var/lib/ntfy/webpush.db";
+      web-push-file = "/var/lib/ntfy-sh/webpush.db";
       web-push-email-address = "chloe@sapphic.moe";
     };
   };
