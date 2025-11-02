@@ -10,6 +10,7 @@ let
   ];
 in
 {
+  "bluesky-pds.age".publicKeys = keys;
   "caddy.age".publicKeys = keys;
   "glance.age".publicKeys = keys;
 }
