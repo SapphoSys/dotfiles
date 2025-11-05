@@ -1,10 +1,11 @@
 {
   imports = [
+    ./bluesky-pds
     ./caddy
     ./glance
-    ./bluesky-pds
-    ./outline
+    ./knot
     ./lanyard
     ./ntfy
+    ./outline
   ];
 }
