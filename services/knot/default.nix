@@ -1,14 +1,14 @@
 {
   services.tangled-knot = {
     enable = true;
+    motd = ''
+      🌸 welcome to the tangled knot server 🌸
+
+      hosted by sapphic angels
+    '';
     server = {
       hostname = "knot.sappho.systems";
       owner = "did:plc:ucaezectmpny7l42baeyooxi";
-      motd = ''
-        🌸 welcome to the tangled knot server 🌸
-
-        hosted by sapphic angels
-      '';
     };
   };
 
