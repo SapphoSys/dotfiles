@@ -254,7 +254,7 @@
       "inputs": {
         "flake-utils": "flake-utils_3",
         "nixpkgs": [
-          "tangled-core",
+          "tangled",
           "nixpkgs"
         ]
       },
@@ -521,7 +521,7 @@
         "nixpkgs": "nixpkgs",
         "ragenix": "ragenix",
         "solaar": "solaar",
-        "tangled-core": "tangled-core"
+        "tangled": "tangled"
       }
     },
     "rust-overlay": {
@@ -665,7 +665,7 @@
         "type": "github"
       }
     },
-    "tangled-core": {
+    "tangled": {
       "inputs": {
         "flake-compat": "flake-compat_4",
         "gomod2nix": "gomod2nix",
