@@ -2,23 +2,20 @@
   services.adguardhome = {
     enable = true;
     host = "0.0.0.0";
-    port = 80;
+    port = 3000;
     settings = {
       dns = {
         port = 53;
         port_tls = 853;
-        port_https = 443;
+        port_https = 8443;
         port_quic = 784;
       };
-
-      web_port = 3000;
     };
   };
 
   settings.firewall = {
     allowedTCPPorts = [
-      80
-      443
+      8443
       3000
     ];
     allowedUDPPorts = [
