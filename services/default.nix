@@ -1,5 +1,6 @@
 {
   imports = [
+    ./adguardhome
     ./bluesky-pds
     ./caddy
     ./glance
