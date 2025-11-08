@@ -1,7 +1,7 @@
 {
   services.adguardhome = {
     enable = true;
-    host = "localhost";
+    host = "100.96.154.98";
     port = 3000;
     settings = {
       dns = {
