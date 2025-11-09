@@ -18,10 +18,11 @@
     image = "ghcr.io/sapphosys/destiny-labeler:main";
     pull = "always";
     autoRemoveOnStop = false;
-    ports = [ "4001:4001" ];
+    ports = [ "4002:4002" ];
     environment = {
       DID = "did:plc:zt2oycjggn5gwdtcgphdh4tn";
       URL = "wss://jetstream.atproto.tools/subscribe";
+      PORT = "4002";
       NODE_ENV = "production";
     };
     environmentFiles = [ config.age.secrets.destiny-labeler.path ];
