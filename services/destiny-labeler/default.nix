@@ -42,7 +42,7 @@
     extraConfig = ''
       import common
       import tls_cloudflare
-      reverse_proxy http://destiny-labeler:4001
+      reverse_proxy http://destiny-labeler:4002
     '';
   };
 }
