@@ -19,14 +19,7 @@
   };
 
   services.caddy.virtualHosts."pds.sappho.systems" = {
-    extraConfig = ''
-      import common
-      import tls_cloudflare
-      reverse_proxy http://127.0.0.1:3333
-    '';
-  };
-
-  services.caddy.virtualHosts."*.pds.sappho.systems" = {
+    serverAliases = [ "*.pds.sappho.systems" ];
     extraConfig = ''
       import common
       import tls_cloudflare
