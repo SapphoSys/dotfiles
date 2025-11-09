@@ -21,7 +21,7 @@
     ports = [ "4002:4002" ];
     environment = {
       DID = "did:plc:zt2oycjggn5gwdtcgphdh4tn";
-      URL = "wss://jetstream.atproto.tools/subscribe";
+      URL = "wss://jetstream1.us-east.bsky.network/subscribe";
       PORT = "4002";
       NODE_ENV = "production";
     };
