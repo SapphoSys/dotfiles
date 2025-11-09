@@ -18,10 +18,10 @@
       NODE_ENV = "production";
     };
     volumes = [
-      "./data/cursor.txt:/app/cursor.txt"
-      "./data/labels.db:/app/labels.db"
-      "./data/labels.db-shm:/app/labels.db-shm"
-      "./data/labels.db-wal:/app/labels.db-wal"
+      "/var/lib/destiny-labeler/data/cursor.txt:/app/cursor.txt"
+      "/var/lib/destiny-labeler/data/labels.db:/app/labels.db"
+      "/var/lib/destiny-labeler/data/labels.db-shm:/app/labels.db-shm"
+      "/var/lib/destiny-labeler/data/labels.db-wal:/app/labels.db-wal"
     ];
     extraOptions = [
       "--restart=always"
