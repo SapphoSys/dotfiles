@@ -12,6 +12,7 @@ in
 {
   "bluesky-pds.age".publicKeys = keys;
   "caddy.age".publicKeys = keys;
+  "destiny-labeler.age".publicKeys = keys;
   "glance.age".publicKeys = keys;
   "lanyard.age".publicKeys = keys;
   "minio.age".publicKeys = keys;
