@@ -1,6 +1,14 @@
 { config, ... }:
 
 {
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/destiny-labeler/data 0755 root root -"
+    "f /var/lib/destiny-labeler/data/cursor.txt 0644 root root -"
+    "f /var/lib/destiny-labeler/data/labels.db 0644 root root -"
+    "f /var/lib/destiny-labeler/data/labels.db-shm 0644 root root -"
+    "f /var/lib/destiny-labeler/data/labels.db-wal 0644 root root -"
+  ];
   age.secrets.destiny-labeler = {
     file = ../../secrets/destiny-labeler.age;
     mode = "600";
