@@ -9,6 +9,7 @@
   virtualisation.oci-containers.containers."destiny-labeler" = {
     image = "ghcr.io/sapphosys/destiny-labeler:main";
     pull = "always";
+    autoRemoveOnStop = false;
     ports = [ "4001:4001" ];
     environment = {
       DID = "did:plc:zt2oycjggn5gwdtcgphdh4tn";
