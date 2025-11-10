@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   age.secrets.bluesky-pds = {
@@ -14,6 +14,12 @@
     settings = {
       PDS_HOSTNAME = "pds.sappho.systems";
       PDS_PORT = 3333;
+      PDS_CRAWLERS = lib.concatStringsSep "," [
+        "https://bsky.network"
+        "https://relay.cerulea.blue"
+        "https://relay.upcloud.world"
+        "https://atproto.africa"
+      ];
     };
     environmentFiles = [ config.age.secrets.bluesky-pds.path ];
   };
