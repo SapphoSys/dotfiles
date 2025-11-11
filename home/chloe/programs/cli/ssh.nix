@@ -4,7 +4,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    
+
     matchBlocks."*" = lib.mkMerge [
       # {
       #   # Default configuration for all hosts
@@ -18,11 +18,5 @@
         identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
       })
     ];
-
-    # Fallback TERM for Ghostty if remote does not support xterm-ghostty
-    extraConfig = ''
-      Host *
-        SetEnv TERM=xterm-256color
-    '';
   };
 }
