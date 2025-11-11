@@ -28,7 +28,7 @@
           "https://security.cloudflare-dns.com/dns-query"
 
           # Resolve DNS queries for 100.* IPs with Tailscale's Magic DNS.
-          "[/100.in-addr.arpa]/100.100.100.100"
+          "[/100.in-addr.arpa/]100.100.100.100"
         ];
       };
 
