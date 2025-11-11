@@ -6,7 +6,8 @@
     package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.ghostty else pkgs.ghostty-bin;
 
     settings = {
-      command = "/bin/zsh";
+      command = "${pkgs.zsh}/bin/zsh";
+      auto-update = "off";
 
       font-family = "Iosevka";
       font-size = 14;
@@ -63,7 +64,13 @@
       confirm-close-surface = true;
 
       shell-integration = "detect";
-      shell-integration-features = [ "cursor" "sudo" "title" "ssh-env" "ssh-terminfo" ];
+      shell-integration-features = [
+        "cursor"
+        "sudo"
+        "title"
+        "ssh-env"
+        "ssh-terminfo"
+      ];
 
       keybind = [
         "super+n=new_window"
