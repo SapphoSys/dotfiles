@@ -30,6 +30,11 @@
           # Resolve DNS queries for 100.* IPs with Tailscale's Magic DNS.
           "[/100.in-addr.arpa/]100.100.100.100"
         ];
+
+        allowed_clients = [
+          "100.64.0.0/10" # Tailscale IP range
+          "127.0.0.1/24" # localhost
+        ];
       };
 
       clients.persistent = [
