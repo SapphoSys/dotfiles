@@ -63,7 +63,6 @@
   };
 
   settings.firewall = {
-    allowedTCPPorts = [ 3000 ];
     allowedUDPPorts = [ 53 ];
   };
 }
