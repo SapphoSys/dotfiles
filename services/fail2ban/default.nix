@@ -4,8 +4,6 @@
   age.secrets.abuseipdb = {
     file = ../../secrets/abuseipdb.age;
     mode = "600";
-    owner = "abuseipdb";
-    group = "abuseipdb";
   };
 
   services.fail2ban = {
