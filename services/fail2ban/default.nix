@@ -45,8 +45,7 @@
         enabled = true;
         port = "ssh";
         filter = "sshd";
-        logpath = "%(syslog_authpriv)s";
-        backend = "auto";
+        backend = "systemd";
         maxretry = 5;
         findtime = "3600";
         bantime = "86400";
