@@ -49,7 +49,7 @@
         maxretry = 5;
         findtime = "3600";
         bantime = "86400";
-        action = "iptables-multiport[name=SSH, port='ssh']\nabuseipdb-agenix[abuseipdb_category='18,22']";
+        action = "iptables-multiport[name=SSH, port='ssh'] abuseipdb-agenix[abuseipdb_category='18,22']";
       };
 
       # Caddy HTTP/HTTPS protection - monitor for repeated 4xx/5xx errors
@@ -62,7 +62,7 @@
         maxretry = 10;
         findtime = "600";
         bantime = "3600";
-        action = "iptables-multiport[name=Caddy, port='http,https']\nabuseipdb-agenix[abuseipdb_category='21']";
+        action = "iptables-multiport[name=Caddy, port='http,https'] abuseipdb-agenix[abuseipdb_category='21']";
       };
 
       # Rate-based protection - ban on excessive requests
@@ -75,7 +75,7 @@
         maxretry = 50;
         findtime = "60";
         bantime = "1800";
-        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https']\nabuseipdb-agenix[abuseipdb_category='21']";
+        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https'] abuseipdb-agenix[abuseipdb_category='21']";
       };
     };
   };
