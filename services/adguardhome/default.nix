@@ -61,8 +61,4 @@
       ];
     };
   };
-
-  settings.firewall = {
-    allowedUDPPorts = [ 53 ];
-  };
 }
