@@ -38,5 +38,8 @@
       allowedTCPPorts = config.settings.firewall.allowedTCPPorts;
       allowedUDPPorts = config.settings.firewall.allowedUDPPorts;
     };
+
+    networking.firewall.allowedTCPPortsIPv6 = config.settings.firewall.allowedTCPPorts;
+    networking.firewall.allowedUDPPortsIPv6 = config.settings.firewall.allowedUDPPorts;
   };
 }
