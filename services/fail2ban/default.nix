@@ -43,7 +43,7 @@
     # Jails for protecting various services
     jails = {
       # SSH protection - monitor failed login attempts
-      sshd = {
+      sshd.settings = {
         enabled = true;
         port = "ssh";
         filter = "sshd";
@@ -59,7 +59,7 @@
       };
 
       # Caddy HTTP/HTTPS protection - monitor for repeated 4xx/5xx errors
-      caddy-http = {
+      caddy-http.settings = {
         enabled = true;
         port = "http,https";
         filter = "caddy-http";
@@ -75,7 +75,7 @@
       };
 
       # Rate-based protection - ban on excessive requests
-      caddy-ratelimit = {
+      caddy-ratelimit.settings = {
         enabled = true;
         port = "http,https";
         filter = "caddy-ratelimit";
