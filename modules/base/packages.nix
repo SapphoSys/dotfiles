@@ -9,5 +9,6 @@
     jq
     nixfmt
     just
+    ragenix
   ];
 }
