@@ -80,47 +80,53 @@
     };
   };
 
-  # Custom filters for Fail2Ban
-  environment.etc = {
-    # Caddy HTTP error monitoring filter
-    "fail2ban/filter.d/caddy-http.conf".text = ''
-      [Definition]
-      failregex = ^<HOST> -.*" (?:400|401|403|404|405|429|500|502|503|504) .*$
-      ignoreregex =
-    '';
+  # Custom filters and actions for Fail2Ban
+  environment.etc =
+    let
+      abuseipdbAction = pkgs.writeText "abuseipdb.conf" ''
+        [Definition]
+        actionstart =
+        actionstop =
+        actioncheck =
 
-    # Caddy rate limiting filter - detects repeated requests within short timeframe
-    "fail2ban/filter.d/caddy-ratelimit.conf".text = ''
-      [Definition]
-      failregex = ^<HOST> -.*" \d{3} .*$
-      ignoreregex =
-    '';
+        # Report IP to AbuseIPDB using the API key from the secret file
+        actionban = /bin/sh -c 'curl -s -X POST https://api.abuseipdb.com/api/v2/report \
+          -H "Key: $(cat <abuseipdb_apikey>)" \
+          -H "Accept: application/json" \
+          -d "ip=<ip>&category=<abuseipdb_category>&comment=<abuseipdb_comment>&timestamp=$(date +%%s)" \
+          >> /var/log/fail2ban-abuseipdb.log 2>&1'
 
-    # AbuseIPDB action for reporting IPs
-    # The API key is passed via the abuseipdb_apikey parameter which should be
-    # set to the path of the decrypted secret file (e.g., /run/agenix/abuseipdb)
-    "fail2ban/action.d/abuseipdb.conf".text = ''
-      [Definition]
-      actionstart =
-      actionstop =
-      actioncheck =
+        # No action to unban - AbuseIPDB reports are permanent
+        actionunban =
 
-      # Report IP to AbuseIPDB
-      # Reads the API key from the file specified in the abuseipdb_apikey parameter
-      actionban = /run/current-system/sw/bin/curl -s -X POST https://api.abuseipdb.com/api/v2/report \
-        -H "Key: $(cat <abuseipdb_apikey>)" \
-        -H "Accept: application/json" \
-        -d "ip=<ip>&category=<abuseipdb_category>&comment=<abuseipdb_comment>" \
-        -o /dev/null
+        [Init]
+        # Default path - will be overridden by jail configuration
+        abuseipdb_apikey = /run/agenix/abuseipdb
+        abuseipdb_category = 18
+        abuseipdb_comment = Fail2Ban Report
+      '';
+    in
+    {
+      # Caddy HTTP error monitoring filter
+      "fail2ban/filter.d/caddy-http.conf".text = ''
+        [Definition]
+        failregex = ^<HOST> -.*" (?:400|401|403|404|405|429|500|502|503|504) .*$
+        ignoreregex =
+      '';
 
-      # No action to unban - AbuseIPDB reports are permanent
-      actionunban =
+      # Caddy rate limiting filter - detects repeated requests within short timeframe
+      "fail2ban/filter.d/caddy-ratelimit.conf".text = ''
+        [Definition]
+        failregex = ^<HOST> -.*" \d{3} .*$
+        ignoreregex =
+      '';
 
-      [Init]
-      # Default path - will be overridden by jail configuration
-      abuseipdb_apikey = /run/agenix/abuseipdb
-      abuseipdb_category = 18
-      abuseipdb_comment = Fail2Ban Report
-    '';
-  };
+      # AbuseIPDB action - must be copied into action.d directory
+      "fail2ban/action.d/abuseipdb.conf".source = abuseipdbAction;
+    };
+
+  # Ensure the log directory exists
+  systemd.tmpfiles.rules = [
+    "d /var/log/fail2ban 0755 root root -"
+  ];
 }
