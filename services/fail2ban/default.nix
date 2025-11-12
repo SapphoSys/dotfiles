@@ -101,12 +101,8 @@
       [Definition]
       # Report IP to AbuseIPDB, reading API key from Agenix secret file
       # Based on official fail2ban abuseipdb.conf but with API key from Agenix
-      actionban = curl --fail 'https://api.abuseipdb.com/api/v2/report' \
-        -H 'Accept: application/json' \
-        -H 'Key: $(cat /run/agenix/abuseipdb)' \
-        --data-urlencode 'ip=<ip>' \
-        --data-urlencode 'comment=<matches>' \
-        --data 'categories=<abuseipdb_category>'
+      # Note: Must be on single line (no backslash continuation) for INI parser
+      actionban = curl --fail 'https://api.abuseipdb.com/api/v2/report' -H 'Accept: application/json' -H 'Key: $(cat /run/agenix/abuseipdb)' --data-urlencode 'ip=<ip>' --data-urlencode 'comment=<matches>' --data 'categories=<abuseipdb_category>'
 
       actionstart =
       actionstop =
