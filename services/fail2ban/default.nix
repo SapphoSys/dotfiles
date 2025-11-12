@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   age.secrets.abuseipdb = {
@@ -49,7 +49,7 @@
         maxretry = 5;
         findtime = "3600";
         bantime = "86400";
-        action = "iptables-multiport[name=SSH, port='ssh']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='18,22']";
+        action = "iptables-multiport[name=SSH, port='ssh']\nabuseipdb-agenix[abuseipdb_category='18,22']";
       };
 
       # Caddy HTTP/HTTPS protection - monitor for repeated 4xx/5xx errors
@@ -62,7 +62,7 @@
         maxretry = 10;
         findtime = "600";
         bantime = "3600";
-        action = "iptables-multiport[name=Caddy, port='http,https']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='21']";
+        action = "iptables-multiport[name=Caddy, port='http,https']\nabuseipdb-agenix[abuseipdb_category='21']";
       };
 
       # Rate-based protection - ban on excessive requests
@@ -75,57 +75,48 @@
         maxretry = 50;
         findtime = "60";
         bantime = "1800";
-        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='21']";
+        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https']\nabuseipdb-agenix[abuseipdb_category='21']";
       };
     };
   };
 
-  # Custom filters and actions for Fail2Ban
-  environment.etc =
-    let
-      abuseipdbAction = ''
-        [Definition]
-        actionstart =
-        actionstop =
-        actioncheck =
+  # Custom filters for Fail2Ban
+  environment.etc = {
+    # Caddy HTTP error monitoring filter
+    "fail2ban/filter.d/caddy-http.conf".text = ''
+      [Definition]
+      failregex = ^<HOST> -.*" (?:400|401|403|404|405|429|500|502|503|504) .*$
+      ignoreregex =
+    '';
 
-        # Report IP to AbuseIPDB using official fail2ban pattern
-        # The abuseipdb_apikey parameter is passed from the jail action call
-        actionban = lgm=$(printf '%%.1000s\n...' "<matches>"); curl -sSf "https://api.abuseipdb.com/api/v2/report" \
-          -H "Accept: application/json" \
-          -H "Key: <abuseipdb_apikey>" \
-          --data-urlencode "comment=$lgm" \
-          --data-urlencode "ip=<ip>" \
-          --data "categories=<abuseipdb_category>"
+    # Caddy rate limiting filter - detects repeated requests within short timeframe
+    "fail2ban/filter.d/caddy-ratelimit.conf".text = ''
+      [Definition]
+      failregex = ^<HOST> -.*" \d{3} .*$
+      ignoreregex =
+    '';
 
-        # No action to unban - AbuseIPDB reports are permanent
-        actionunban =
+    # Custom abuseipdb action that reads API key from file
+    "fail2ban/action.d/abuseipdb-agenix.conf".text = ''
+      [Definition]
+      # Report IP to AbuseIPDB, reading API key from Agenix secret file
+      # The entire command is wrapped in /bin/sh -c to ensure shell expansion of $(cat ...)
+      actionban = /bin/sh -c 'lgm=$(printf "%%.1000s\n..." "<matches>"); curl -sSf "https://api.abuseipdb.com/api/v2/report" \
+        -H "Accept: application/json" \
+        -H "Key: $(cat /run/agenix/abuseipdb)" \
+        --data-urlencode "comment=$lgm" \
+        --data-urlencode "ip=<ip>" \
+        --data "categories=<abuseipdb_category>"'
 
-        [Init]
-        # Default category for abuse report
-        abuseipdb_category = 18
-        # API key must be provided in jail action call
-        abuseipdb_apikey =
-      '';
-    in
-    {
-      # Caddy HTTP error monitoring filter
-      "fail2ban/filter.d/caddy-http.conf".text = ''
-        [Definition]
-        failregex = ^<HOST> -.*" (?:400|401|403|404|405|429|500|502|503|504) .*$
-        ignoreregex =
-      '';
+      actionstart =
+      actionstop =
+      actioncheck =
+      actionunban =
 
-      # Caddy rate limiting filter - detects repeated requests within short timeframe
-      "fail2ban/filter.d/caddy-ratelimit.conf".text = ''
-        [Definition]
-        failregex = ^<HOST> -.*" \d{3} .*$
-        ignoreregex =
-      '';
-
-      # AbuseIPDB action - must be copied into action.d directory
-      "fail2ban/action.d/abuseipdb.conf".text = abuseipdbAction;
-    };
+      [Init]
+      abuseipdb_category = 18
+    '';
+  };
 
   # Ensure the log directory exists
   systemd.tmpfiles.rules = [
