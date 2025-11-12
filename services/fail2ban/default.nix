@@ -40,7 +40,7 @@
 
     # Jails for protecting various services
     jails = {
-      # SSH protection - monitor failed login attempts
+      # SSH protection - monitor failed login attempts using systemd journal
       sshd.settings = {
         enabled = true;
         port = "ssh";
@@ -57,7 +57,7 @@
         enabled = true;
         port = "http,https";
         filter = "caddy-http";
-        logpath = "/var/log/caddy/access.log";
+        logpath = "/var/log/caddy/access-*.log";
         backend = "auto";
         maxretry = 10;
         findtime = "600";
@@ -70,7 +70,7 @@
         enabled = true;
         port = "http,https";
         filter = "caddy-ratelimit";
-        logpath = "/var/log/caddy/access.log";
+        logpath = "/var/log/caddy/access-*.log";
         backend = "auto";
         maxretry = 50;
         findtime = "60";
