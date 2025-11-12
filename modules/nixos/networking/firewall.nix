@@ -37,6 +37,8 @@
       enable = true;
       allowedTCPPorts = config.settings.firewall.allowedTCPPorts;
       allowedUDPPorts = config.settings.firewall.allowedUDPPorts;
+      logRefusedConnections = lib.mkDefault false;
+      logRefusedPackets = lib.mkDefault false;
     };
 
     networking.firewall.allowedTCPPortsIPv6 = config.settings.firewall.allowedTCPPorts;
