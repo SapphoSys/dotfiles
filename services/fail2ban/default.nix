@@ -49,7 +49,7 @@
         maxretry = 5;
         findtime = "3600";
         bantime = "86400";
-        action = "iptables-multiport[name=SSH, port='ssh']\nabuseipdb[abuseipdb_apikey=${config.age.secrets.abuseipdb.path}, abuseipdb_category='18,22', abuseipdb_comment='Fail2Ban SSH Brute Force']";
+        action = "iptables-multiport[name=SSH, port='ssh']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='18,22']";
       };
 
       # Caddy HTTP/HTTPS protection - monitor for repeated 4xx/5xx errors
@@ -62,7 +62,7 @@
         maxretry = 10;
         findtime = "600";
         bantime = "3600";
-        action = "iptables-multiport[name=Caddy, port='http,https']\nabuseipdb[abuseipdb_apikey=${config.age.secrets.abuseipdb.path}, abuseipdb_category='21', abuseipdb_comment='Fail2Ban Caddy Abuse']";
+        action = "iptables-multiport[name=Caddy, port='http,https']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='21']";
       };
 
       # Rate-based protection - ban on excessive requests
@@ -75,7 +75,7 @@
         maxretry = 50;
         findtime = "60";
         bantime = "1800";
-        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https']\nabuseipdb[abuseipdb_apikey=${config.age.secrets.abuseipdb.path}, abuseipdb_category='21', abuseipdb_comment='Fail2Ban Rate Limiting']";
+        action = "iptables-multiport[name=Caddy-RateLimit, port='http,https']\nabuseipdb[abuseipdb_apikey='$(cat /run/agenix/abuseipdb)', abuseipdb_category='21']";
       };
     };
   };
@@ -83,27 +83,29 @@
   # Custom filters and actions for Fail2Ban
   environment.etc =
     let
-      abuseipdbAction = pkgs.writeText "abuseipdb.conf" ''
+      abuseipdbAction = ''
         [Definition]
         actionstart =
         actionstop =
         actioncheck =
 
-        # Report IP to AbuseIPDB using the API key from the secret file
-        actionban = /bin/sh -c 'curl -s -X POST https://api.abuseipdb.com/api/v2/report \
-          -H "Key: $(cat <abuseipdb_apikey>)" \
+        # Report IP to AbuseIPDB using official fail2ban pattern
+        # The abuseipdb_apikey parameter is passed from the jail action call
+        actionban = lgm=$(printf '%%.1000s\n...' "<matches>"); curl -sSf "https://api.abuseipdb.com/api/v2/report" \
           -H "Accept: application/json" \
-          -d "ip=<ip>&category=<abuseipdb_category>&comment=<abuseipdb_comment>&timestamp=$(date +%%s)" \
-          >> /var/log/fail2ban-abuseipdb.log 2>&1'
+          -H "Key: <abuseipdb_apikey>" \
+          --data-urlencode "comment=$lgm" \
+          --data-urlencode "ip=<ip>" \
+          --data "categories=<abuseipdb_category>"
 
         # No action to unban - AbuseIPDB reports are permanent
         actionunban =
 
         [Init]
-        # Default path - will be overridden by jail configuration
-        abuseipdb_apikey = /run/agenix/abuseipdb
+        # Default category for abuse report
         abuseipdb_category = 18
-        abuseipdb_comment = Fail2Ban Report
+        # API key must be provided in jail action call
+        abuseipdb_apikey =
       '';
     in
     {
@@ -122,7 +124,7 @@
       '';
 
       # AbuseIPDB action - must be copied into action.d directory
-      "fail2ban/action.d/abuseipdb.conf".source = abuseipdbAction;
+      "fail2ban/action.d/abuseipdb.conf".text = abuseipdbAction;
     };
 
   # Ensure the log directory exists
