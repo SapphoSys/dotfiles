@@ -100,13 +100,13 @@
     "fail2ban/action.d/abuseipdb-agenix.conf".text = ''
       [Definition]
       # Report IP to AbuseIPDB, reading API key from Agenix secret file
-      # The entire command is wrapped in /bin/sh -c to ensure shell expansion of $(cat ...)
-      actionban = /bin/sh -c 'lgm=$(printf "%%.1000s\n..." "<matches>"); curl -sSf "https://api.abuseipdb.com/api/v2/report" \
+      actionban = lgm=$(printf '%%.1000s\n...' "<matches>"); \
+        curl -sSf "https://api.abuseipdb.com/api/v2/report" \
         -H "Accept: application/json" \
         -H "Key: $(cat /run/agenix/abuseipdb)" \
         --data-urlencode "comment=$lgm" \
         --data-urlencode "ip=<ip>" \
-        --data "categories=<abuseipdb_category>"'
+        --data "categories=<abuseipdb_category>"
 
       actionstart =
       actionstop =
