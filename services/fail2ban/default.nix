@@ -103,7 +103,8 @@
       # Uses double quotes to allow shell expansion of $(cat /run/agenix/abuseipdb)
       # Sleep 12 seconds to respect AbuseIPDB rate limit (~5 requests per minute)
       # Note: Don't use <matches> - fail2ban's wrapper causes issues with multiline content
-      actionban = sleep 12; curl --fail 'https://api.abuseipdb.com/api/v2/report' -H 'Accept: application/json' -H "Key: $(cat /run/agenix/abuseipdb)" --data-urlencode 'ip=<ip>' --data 'categories=<abuseipdb_category>'
+      # Don't use --fail so 429 rate limit errors don't mark action as failed
+      actionban = sleep 12; curl 'https://api.abuseipdb.com/api/v2/report' -H 'Accept: application/json' -H "Key: $(cat /run/agenix/abuseipdb)" --data-urlencode 'ip=<ip>' --data 'categories=<abuseipdb_category>' > /dev/null 2>&1
 
       actionstart =
       actionstop =
