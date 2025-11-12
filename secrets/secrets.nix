@@ -10,6 +10,7 @@ let
   ];
 in
 {
+  "abuseipdb.age".publicKeys = keys;
   "bluesky-pds.age".publicKeys = keys;
   "caddy.age".publicKeys = keys;
   "destiny-labeler.age".publicKeys = keys;

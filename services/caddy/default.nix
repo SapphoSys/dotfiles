@@ -27,6 +27,10 @@
         encode zstd gzip
       }
     '';
+    logFormat = ''
+      level info
+      format json
+    '';
   };
 
   settings.firewall.allowedTCPPorts = [
