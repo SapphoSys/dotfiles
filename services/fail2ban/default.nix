@@ -101,7 +101,8 @@
       [Definition]
       # Report IP to AbuseIPDB, reading API key from Agenix secret file
       # Simple version without <matches> to avoid parameter substitution issues
-      actionban = sleep 1; curl --fail 'https://api.abuseipdb.com/api/v2/report' -H 'Accept: application/json' -H 'Key: $(cat /run/agenix/abuseipdb)' --data-urlencode 'ip=<ip>' --data 'categories=<abuseipdb_category>'
+      # Uses double quotes to allow shell expansion of $(cat /run/agenix/abuseipdb)
+      actionban = sleep 1; curl --fail 'https://api.abuseipdb.com/api/v2/report' -H 'Accept: application/json' -H "Key: $(cat /run/agenix/abuseipdb)" --data-urlencode 'ip=<ip>' --data 'categories=<abuseipdb_category>'
 
       actionstart =
       actionstop =
