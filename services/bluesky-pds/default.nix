@@ -60,9 +60,9 @@
         ⠈⢧⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
         ⠀⠈
 
-        Welcome to the Sapphic Angels' AT Protocol PDS.
+      Welcome to the Sapphic Angels' AT Protocol PDS.
 
-        API routes accessible at /xrpc/
+      API routes accessible at /xrpc/
       EOF 200
       }
 
