@@ -60,9 +60,13 @@
         ⠈⢧⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
         ⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-      Welcome to the Sapphic Angels' AT Protocol Personal Data Server (PDS)
+      Welcome to Sapphic Angels' AT Protocol Personal Data Server (PDS)
 
       API routes accessible at /xrpc/
+
+      Website: https://sapphic.moe
+      AT Protocol: https://atproto.com
+      Self-host your own PDS: https://github.com/bluesky-social/pds
 
       🌸 🐇
       EOF 200
