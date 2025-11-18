@@ -10,7 +10,7 @@
     enable = true;
     package = pkgs.caddy.withPlugins {
       plugins = [ "github.com/caddy-dns/bunny@v1.2.0" ];
-      hash = "sha256-iRzpN9awuEFsc7hqKzOMNiCFFEv833xhd4LM+VFQedI=";
+      hash = "sha256-bwffi5sWq07DVoPQGgEIN1jnvQKL6c4tFfR9AT9ThD4=";
     };
     environmentFile = config.age.secrets.caddy.path;
     globalConfig = ''
