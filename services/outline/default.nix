@@ -108,7 +108,7 @@
   services.caddy.virtualHosts."wiki.sappho.systems" = {
     extraConfig = ''
       import common
-      import tls_cloudflare
+      import tls_bunny
       reverse_proxy http://localhost:3300
     '';
   };
@@ -116,7 +116,7 @@
   services.caddy.virtualHosts."minio.sappho.systems" = {
     extraConfig = ''
       import common
-      import tls_cloudflare
+      import tls_bunny
       reverse_proxy http://localhost:9000
     '';
   };

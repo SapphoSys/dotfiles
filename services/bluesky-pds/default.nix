@@ -28,7 +28,7 @@
     serverAliases = [ "*.pds.sappho.systems" ];
     extraConfig = ''
       import common
-      import tls_cloudflare
+      import tls_bunny
 
       handle / {
         respond <<EOF

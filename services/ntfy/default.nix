@@ -33,7 +33,7 @@
   services.caddy.virtualHosts."notify.sappho.systems" = {
     extraConfig = ''
       import common
-      import tls_cloudflare
+      import tls_bunny
       reverse_proxy http://127.0.0.1:7070
     '';
   };

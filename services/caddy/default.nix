@@ -9,7 +9,7 @@
   services.caddy = {
     enable = true;
     package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.1" ];
+      plugins = [ "github.com/caddy-dns/bunny@v1.2.0" ];
       hash = "sha256-iRzpN9awuEFsc7hqKzOMNiCFFEv833xhd4LM+VFQedI=";
     };
     environmentFile = config.age.secrets.caddy.path;
@@ -17,9 +17,9 @@
       email chloe@sapphic.moe
     '';
     extraConfig = ''
-      (tls_cloudflare) {
+      (tls_bunny) {
         tls {
-          dns cloudflare {env.CF_API_TOKEN}
+          dns bunny {env.BUNNY_API_TOKEN}
           resolvers 8.8.8.8 1.1.1.1
         }
       }
