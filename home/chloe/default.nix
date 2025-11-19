@@ -1,10 +1,12 @@
 {
   imports = [
+    ./autostart.nix
     ./catppuccin.nix
     ./docs.nix
     ./files.nix
     ./packages
     ./programs
+    ./scripts.nix
   ];
 
   xdg.enable = true;

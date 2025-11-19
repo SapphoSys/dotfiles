@@ -1,10 +1,15 @@
-{ lib, osConfig, pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 
 {
   config = lib.mkIf osConfig.settings.profiles.graphical.enable {
     xdg.configFile = {
       # .desktop files for autostart only work on Linux with XDG
-      "autostart/1password.desktop" = lib.mkIf pkgs.stdenv.isLinux {
+      "autostart/1password.desktop" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         text = ''
           [Desktop Entry]
           Name=1Password

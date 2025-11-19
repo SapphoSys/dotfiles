@@ -1,21 +1,18 @@
-{ 
+{
   pkgs,
   lib,
-  osConfig, 
+  osConfig,
   ...
 }:
 
 let
-  defaultPackages = import ./list/default.nix { inherit pkgs; };
-  guiPackages = import ./list/gui.nix { inherit pkgs lib osConfig; };
+  basePackages = import ./base.nix { inherit pkgs; };
+  darwinPackages = import ./darwin.nix { inherit pkgs lib osConfig; };
+  linuxPackages = import ./linux.nix { inherit pkgs lib osConfig; };
+  universalPackages = import ./universal.nix { inherit pkgs lib osConfig; };
 in
 {
-  imports = [
-    ./autostart.nix
-    ./scripts.nix
-  ];
-
   config = {
-    home.packages = defaultPackages ++ guiPackages;
+    home.packages = basePackages ++ darwinPackages ++ linuxPackages ++ universalPackages;
   };
 }
