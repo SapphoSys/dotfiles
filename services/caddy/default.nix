@@ -31,7 +31,7 @@
       }
     '';
     logFormat = ''
-      level info
+      level debug
       format json
     '';
   };
