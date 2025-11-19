@@ -7,6 +7,7 @@
     ./packages.nix
     ./preferences
     ./security
+    ./startup.nix
     ./users.nix
   ];
 }
