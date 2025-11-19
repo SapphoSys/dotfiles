@@ -16,7 +16,6 @@
   services.caddy.virtualHosts."home.sappho.systems" = {
     extraConfig = ''
       import common
-      import tls_bunny
       reverse_proxy http://localhost:4040
     '';
   };
