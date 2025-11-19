@@ -22,10 +22,17 @@
     # Casks (GUI applications)
     casks = [
       "1password"
+      "bruno"
+      "crossover"
+      "discord"
       "maccy"
+      "microsoft-edge"
       "microsoft-teams"
+      "mos"
       "music-presence"
-      "prismlauncher"
+      "osu"
+      "signal"
+      "steam"
     ];
 
     # Mac App Store apps (requires mas-cli)
