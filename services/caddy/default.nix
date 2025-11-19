@@ -19,8 +19,8 @@
     extraConfig = ''
       (tls_bunny) {
         tls {
-          dns bunny {env.BUNNY_API_TOKEN}
-          resolvers 8.8.8.8 1.1.1.1
+          dns bunny {env.BUNNY_API_KEY}
+          resolvers 9.9.9.9 149.112.112.112
         }
       }
       (common) {
