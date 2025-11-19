@@ -8,7 +8,7 @@
 
   services.glance = {
     enable = true;
-    openFirewall = true;
+    openFirewall = false;
     environmentFile = config.age.secrets.glance.path;
     settings = import ./settings.nix;
   };

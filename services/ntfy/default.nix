@@ -43,7 +43,4 @@
       }
     '';
   };
-
-  # Firewall
-  settings.firewall.allowedTCPPorts = [ 7070 ];
 }
