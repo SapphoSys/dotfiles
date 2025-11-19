@@ -16,6 +16,7 @@
     };
     environmentFile = config.age.secrets.caddy.path;
     globalConfig = ''
+      debug
       email chloe@sapphic.moe
     '';
     extraConfig = ''
