@@ -33,6 +33,8 @@
   services.caddy.virtualHosts."notify.sappho.systems" = {
     extraConfig = ''
       import common
+      import tls_bunny
+      import deny_non_bunny
 
       reverse_proxy http://127.0.0.1:7070 {
         header_up X-Forwarded-Proto https
