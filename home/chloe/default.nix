@@ -1,5 +1,6 @@
 {
   imports = [
+    ./activation.nix
     ./autostart.nix
     ./catppuccin.nix
     ./docs.nix
