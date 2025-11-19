@@ -18,6 +18,7 @@ in
   "lanyard.age".publicKeys = keys;
   "minio.age".publicKeys = keys;
   "ntfy.age".publicKeys = keys;
+  "sapphic-moe.age".publicKeys = keys;
   "outline/client-secret.age".publicKeys = keys;
   "outline/minio-password.age".publicKeys = keys;
   "outline/secret-key.age".publicKeys = keys;

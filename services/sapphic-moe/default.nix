@@ -1,0 +1,38 @@
+{ config, ... }:
+
+{
+  age.secrets.sapphic-moe = {
+    file = ../../secrets/sapphic-moe.age;
+    mode = "600";
+  };
+
+  virtualisation.oci-containers.containers.sapphic-moe = {
+    image = "ghcr.io/sapphosys/sapphic-moe:latest";
+    pull = "always";
+
+    ports = [ "3000:4321" ];
+
+    environment = {
+      NODE_ENV = "production";
+      ASTRO_TELEMETRY_DISABLED = "1";
+      NPM_CONFIG_UPDATE_NOTIFIER = "false";
+    };
+
+    environmentFiles = [ config.age.secrets.sapphic-moe.path ];
+
+    autoRemoveOnStop = false;
+
+    extraOptions = [
+      "--restart=always"
+      "--network=host"
+    ];
+  };
+
+  services.caddy.virtualHosts."sapphic.moe" = {
+    extraConfig = ''
+      import common
+      import tls_bunny
+      reverse_proxy http://127.0.0.1:3000
+    '';
+  };
+}

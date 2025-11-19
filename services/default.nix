@@ -10,5 +10,6 @@
     ./lanyard
     ./ntfy
     ./outline
+    ./sapphic-moe
   ];
 }
