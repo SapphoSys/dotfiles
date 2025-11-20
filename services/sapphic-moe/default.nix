@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   age.secrets.sapphic-moe = {
@@ -22,23 +27,14 @@
     wantedBy = [ "multi-user.target" ];
 
     script = ''
-      mkdir -p /root/.config/containers
       TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
-      # Encode credentials as base64: _:TOKEN
-      AUTH=$(echo -n "_:$TOKEN" | base64 -w0)
-      cat > /root/.config/containers/auth.json <<EOF
-      {
-        "auths": {
-          "ghcr.io": {
-            "auth": "$AUTH"
-          }
-        }
-      }
-      EOF
-      chmod 600 /root/.config/containers/auth.json
+      ${pkgs.podman}/bin/podman login --username "_" --password-stdin ghcr.io <<< "$TOKEN"
     '';
 
-    serviceConfig.Type = "oneshot";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
