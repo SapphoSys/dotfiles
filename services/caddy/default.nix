@@ -36,14 +36,6 @@
     '';
   };
 
-  services.caddy.virtualHosts."sapphic.moe" = {
-    extraConfig = ''
-      import common
-      import tls_bunny
-      reverse_proxy http://127.0.0.1:3000
-    '';
-  };
-
   settings.firewall.allowedTCPPorts = [
     80
     443
