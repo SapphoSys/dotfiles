@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   age.secrets.sapphic-moe = {
@@ -13,22 +13,34 @@
     group = "root";
   };
 
-  # Configure podman authentication for ghcr.io
-  system.activationScripts.podman-ghcr-auth = {
-    text = ''
-      mkdir -p /root/.config/containers
-      cat > /root/.config/containers/auth.json <<EOF
-      {
-        "auths": {
-          "ghcr.io": {
-            "auth": "$(echo -n "_:$(cat ${config.age.secrets.ghcr-io-token.path})" | base64 -w0)"
+  # Set up podman authentication before container starts
+  systemd.services.podman-sapphic-moe-setup = {
+    description = "Setup podman authentication for sapphic-moe";
+    before = [ "podman-sapphic-moe.service" ];
+    requiredBy = [ "podman-sapphic-moe.service" ];
+    after = [ "agenix.target" ];
+    wantedBy = [ "multi-user.target" ];
+    
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = let
+        authScript = lib.writeShellScript "setup-podman-auth" ''
+          mkdir -p /root/.config/containers
+          TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
+          cat > /root/.config/containers/auth.json <<EOF
+          {
+            "auths": {
+              "ghcr.io": {
+                "username": "_",
+                "password": "$TOKEN"
+              }
+            }
           }
-        }
-      }
-      EOF
-      chmod 600 /root/.config/containers/auth.json
-    '';
-    deps = [ "agenix" ];
+          EOF
+          chmod 600 /root/.config/containers/auth.json
+        '';
+      in "${authScript}";
+    };
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
@@ -50,6 +62,7 @@
     extraOptions = [
       "--restart=always"
       "--network=host"
+      "--authfile=/root/.config/containers/auth.json"
     ];
   };
 
