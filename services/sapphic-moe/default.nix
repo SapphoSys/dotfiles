@@ -6,14 +6,16 @@
 }:
 
 {
-  age.secrets.sapphic-moe = {
-    file = ../../secrets/sapphic-moe.age;
-    mode = "600";
-  };
+  age.secrets = {
+    sapphic.moe = {
+      file = ../../secrets/sapphic-moe.age;
+      mode = "600";
+    };
 
-  age.secrets.ghcr-io-token = {
-    file = ../../secrets/ghcr-io-token.age;
-    mode = "600";
+    ghcr-io-token = {
+      file = ../../secrets/ghcr-io-token.age;
+      mode = "600";
+    };
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
