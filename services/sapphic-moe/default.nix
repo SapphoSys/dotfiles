@@ -26,7 +26,7 @@
       passwordFile = config.age.secrets.ghcr-io-token.path;
     };
 
-    ports = [ "3000:4321" ];
+    ports = [ "4321:4321" ];
 
     environment = {
       NODE_ENV = "production";
@@ -48,7 +48,7 @@
     extraConfig = ''
       import common
       import tls_bunny
-      reverse_proxy http://127.0.0.1:3000
+      reverse_proxy http://127.0.0.1:4321
     '';
   };
 }
