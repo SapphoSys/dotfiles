@@ -24,20 +24,14 @@
     script = ''
       mkdir -p /root/.config/containers
       TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
-      cat > /root/.config/containers/auth.json <<EOF
-      {
-        "auths": {
-          "ghcr.io": {
-            "username": "_",
-            "password": "$TOKEN"
-          }
-        }
-      }
-      EOF
-      chmod 600 /root/.config/containers/auth.json
+      # Use podman login to set up credentials
+      echo "$TOKEN" | podman login --username "_" --password-stdin ghcr.io
     '';
 
-    serviceConfig.Type = "oneshot";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
