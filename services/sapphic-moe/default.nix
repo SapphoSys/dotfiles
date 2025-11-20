@@ -7,7 +7,7 @@
 
 {
   age.secrets = {
-    sapphic.moe = {
+    sapphic-moe = {
       file = ../../secrets/sapphic-moe.age;
       mode = "600";
     };
