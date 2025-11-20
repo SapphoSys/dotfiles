@@ -14,32 +14,17 @@
   age.secrets.ghcr-io-token = {
     file = ../../secrets/ghcr-io-token.age;
     mode = "600";
-    owner = "root";
-    group = "root";
-  };
-
-  # Set up podman authentication before container starts
-  systemd.services.podman-sapphic-moe-setup = {
-    description = "Setup podman authentication for sapphic-moe";
-    before = [ "podman-sapphic-moe.service" ];
-    requiredBy = [ "podman-sapphic-moe.service" ];
-    after = [ "agenix.target" ];
-    wantedBy = [ "multi-user.target" ];
-
-    script = ''
-      TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
-      ${pkgs.podman}/bin/podman login --username "_" --password-stdin ghcr.io <<< "$TOKEN"
-    '';
-
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
     image = "ghcr.io/sapphosys/sapphic-moe:latest";
     pull = "always";
+
+    login = {
+      username = "SapphoSys";
+      registry = "ghcr.io";
+      passwordFile = config.age.secrets.ghcr-io-token.path;
+    };
 
     ports = [ "3000:4321" ];
 
@@ -56,7 +41,6 @@
     extraOptions = [
       "--restart=always"
       "--network=host"
-      "--authfile=/root/.config/containers/auth.json"
     ];
   };
 
