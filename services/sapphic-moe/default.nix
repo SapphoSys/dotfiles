@@ -21,26 +21,23 @@
     after = [ "agenix.target" ];
     wantedBy = [ "multi-user.target" ];
 
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${lib.getExe lib.bash} -c '
-          mkdir -p /root/.config/containers
-          TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
-          cat > /root/.config/containers/auth.json <<EOF
-          {
-            "auths": {
-              "ghcr.io": {
-                "username": "_",
-                "password": "'$TOKEN'"
-              }
-            }
+    script = ''
+      mkdir -p /root/.config/containers
+      TOKEN=$(cat ${config.age.secrets.ghcr-io-token.path})
+      cat > /root/.config/containers/auth.json <<EOF
+      {
+        "auths": {
+          "ghcr.io": {
+            "username": "_",
+            "password": "$TOKEN"
           }
-          EOF
-          chmod 600 /root/.config/containers/auth.json
-        '
-      '';
-    };
+        }
+      }
+      EOF
+      chmod 600 /root/.config/containers/auth.json
+    '';
+
+    serviceConfig.Type = "oneshot";
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
