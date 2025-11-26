@@ -1,5 +1,5 @@
 {
-  services.tangled-knot = {
+  services.tangled.knot = {
     enable = true;
     motd = ''
          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡀⢀⠀⢀⠀⠀⠀⠀
