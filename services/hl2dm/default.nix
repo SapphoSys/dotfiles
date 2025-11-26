@@ -10,11 +10,15 @@
     hl2dm-rcon = {
       file = ../../secrets/hl2dm-rcon.age;
       mode = "600";
+      user = "srcds";
+      group = "srcds";
     };
 
     hl2dm-server = {
       file = ../../secrets/hl2dm-server.age;
       mode = "600";
+      user = "srcds";
+      group = "srcds";
     };
   };
 
@@ -114,7 +118,6 @@
 
       serverConfig = {
         hostname = "Chloe's Half-Life 2 Deathmatch server on NixOS";
-        sv_contact = "chloe@sapphic.moe";
       };
 
       extraArgs = [
