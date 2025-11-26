@@ -94,6 +94,15 @@
   };
 
   systemd.services."srcds-game-my-hl2dm-server" = {
+    preStart = lib.mkBefore ''
+      # Inject actual RCON password from agenix secret into server.cfg
+      SERVERDIR=/var/lib/srcds/my-hl2dm-server/hl2mp
+      if [[ -f $SERVERDIR/cfg/server.cfg ]]; then
+        RCON_PASS=$(cat ${config.age.secrets.hl2dm-rcon.path})
+        sed -i "s|rcon_password /run/agenix/hl2dm-rcon|rcon_password $RCON_PASS|g" $SERVERDIR/cfg/server.cfg
+      fi
+    '';
+
     postStart = lib.mkBefore ''
       # Give Steam time to fully initialize before accepting connections
       echo "Waiting for Steam API initialization..."
