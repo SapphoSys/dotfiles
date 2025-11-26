@@ -82,7 +82,8 @@
 
       # Create server_local.cfg with RCON password if it doesn't exist
       LOCALCFG="/var/lib/hl2dm/serverfiles/hl2mp/cfg/server_local.cfg"
-      
+      SERVERCFG="/var/lib/hl2dm/serverfiles/hl2mp/cfg/server.cfg"
+
       echo "Checking for $LOCALCFG"
 
       if [[ ! -f "$LOCALCFG" ]]; then
@@ -93,11 +94,23 @@
         echo "sv_password \"\"" >> "$LOCALCFG"
         echo "hostname \"Chloe's Half-Life 2 Deathmatch Server\"" >> "$LOCALCFG"
         chmod 644 "$LOCALCFG"
-        echo "RCON password configured in server_local.cfg"
+        echo "✓ RCON password configured in server_local.cfg"
       else
-        echo "server_local.cfg already exists"
+        echo "✓ server_local.cfg already exists"
       fi
-      
+
+      # Ensure server_local.cfg is executed by server.cfg
+      if ! grep -q "exec.*server_local.cfg" "$SERVERCFG"; then
+        echo ""
+        echo "Adding server_local.cfg execution to server.cfg..."
+        echo "" >> "$SERVERCFG"
+        echo "// Execute local server configuration" >> "$SERVERCFG"
+        echo "exec server_local.cfg" >> "$SERVERCFG"
+        echo "✓ Added exec server_local.cfg to server.cfg"
+      else
+        echo "✓ server_local.cfg already executed in server.cfg"
+      fi
+
       ls -la "$LOCALCFG"
     '';
   };
