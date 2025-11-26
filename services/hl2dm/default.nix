@@ -29,19 +29,33 @@
   ];
 
   systemd.services.srcds-setup = {
+    path = [ pkgs.gnutar pkgs.xz pkgs.steamcmd ];
+    
     preStart = lib.mkBefore ''
       # Work around bug in srcds-nix tar extraction
       # Pre-extract the Steam bootstrap to avoid "tar -C $STEAMDIR -xvf $STEAMDIR" failing
-      if [[ ! -d /var/lib/srcds/.local/share/Steam/ubuntu12_32 ]] || [[ ! -f /var/lib/srcds/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh ]]; then
-        STEAMDIR=/var/lib/srcds/.local/share/Steam
-        mkdir -p $STEAMDIR
-        ${pkgs.steam-unwrapped}/bin/steam-runtime-launcher-system setup "$STEAMDIR/ubuntu12_32" 2>/dev/null || true
+      STEAMDIR=/var/lib/srcds/.local/share/Steam
+      mkdir -p $STEAMDIR
+      
+      if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
+        echo "Setting up Steam runtime..."
+        # Extract bootstrap directly from steam-unwrapped
+        if [[ -f ${pkgs.steam-unwrapped}/lib/steam/bootstraplinux_ubuntu12_32.tar.xz ]]; then
+          echo "Extracting Steam runtime from steam-unwrapped..."
+          tar -C $STEAMDIR -xf ${pkgs.steam-unwrapped}/lib/steam/bootstraplinux_ubuntu12_32.tar.xz || true
+        fi
+      fi
+      
+      if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
+        echo "WARNING: Steam runtime not found at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
+      else
+        echo "Steam runtime ready at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
       fi
 
       # Try to bootstrap HL2DM server files
       if [[ ! -f /var/lib/srcds/my-hl2dm-server/hl2mp/srcds_run ]]; then
         echo "Attempting to download HL2DM server files..."
-        HOME=/var/lib/srcds ${pkgs.steamcmd}/bin/steamcmd \
+        HOME=/var/lib/srcds steamcmd \
           +force_install_dir /var/lib/srcds/my-hl2dm-server \
           +login anonymous \
           +app_update 232370 validate \
