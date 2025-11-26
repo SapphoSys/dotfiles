@@ -23,6 +23,9 @@
     "d /var/lib/hl2dm/serverfiles 0755 root root -"
     "d /var/lib/hl2dm/serverfiles/hl2mp 0755 root root -"
     "d /var/lib/hl2dm/serverfiles/hl2mp/cfg 0755 root root -"
+    "d /var/lib/hl2dm/.steam 0755 root root -"
+    "d /var/lib/hl2dm/.steam/sdk32 0755 root root -"
+    "d /var/lib/hl2dm/Steam 0755 root root -"
   ];
 
   # Container-based HL2DM server using ich777's steamcmd docker image
@@ -39,7 +42,7 @@
       GAME_ID = "232370";
       GAME_NAME = "hl2mp";
       GAME_PORT = "27015";
-      GAME_PARAMS = "+sv_hibernate_when_empty 0 +net_start_thread 1 +maxplayers 24 +map dm_lockdown";
+      GAME_PARAMS = "+maxplayers 24 +map dm_lockdown";
       UID = "99";
       GID = "100";
     };
@@ -48,11 +51,43 @@
     volumes = [
       "/var/lib/hl2dm/steamcmd:/serverdata/steamcmd"
       "/var/lib/hl2dm/serverfiles:/serverdata/serverfiles"
+      "/var/lib/hl2dm/.steam:/serverdata/.steam"
+      "/var/lib/hl2dm/Steam:/serverdata/Steam"
     ];
 
     extraOptions = [
       "--restart=always"
     ];
+  };
+
+  # Post-startup: Copy Steam SDK files from steamcmd to SDK directory
+  systemd.services.hl2dm-sdk-init = {
+    after = [ "hl2dm.service" ];
+    wantedBy = [ "multi-user.target" ];
+    requires = [ "hl2dm.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      sleep 5
+
+      # Copy Steam SDK files
+      SDKDIR="/var/lib/hl2dm/.steam/sdk32"
+      STEAMDIR="/var/lib/hl2dm/Steam"
+
+      if [[ -f "$STEAMDIR/linux32/steamclient.so" ]]; then
+        cp -f "$STEAMDIR/linux32/steamclient.so" "$SDKDIR/steamclient.so" 2>/dev/null || true
+      fi
+
+      if [[ -f "$STEAMDIR/steamclient.so" ]]; then
+        cp -f "$STEAMDIR/steamclient.so" "$SDKDIR/steamclient.so" 2>/dev/null || true
+      fi
+
+      # Restart server to pick up SDK files
+      sleep 2
+      ${config.boot.systemd.package}/bin/systemctl restart podman-hl2dm.service || true
+    '';
   };
 
   # Post-startup hook to configure RCON password
