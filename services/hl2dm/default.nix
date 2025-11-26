@@ -14,7 +14,10 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/srcds 0755 root root -"
+    "d /var/lib/srcds 0755 srcds srcds -"
+    "d /var/lib/srcds/.local 0755 srcds srcds -"
+    "d /var/lib/srcds/.local/share 0755 srcds srcds -"
+    "d /var/lib/srcds/.local/share/Steam 0755 srcds srcds -"
   ];
 
   services.srcds = {
