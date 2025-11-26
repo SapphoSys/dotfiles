@@ -67,20 +67,26 @@
 
   # Post-startup hook to configure RCON password
   systemd.services.hl2dm-configure = {
-    after = [ "hl2dm.service" ];
+    after = [ "podman-hl2dm.service" ];
     wantedBy = [ "multi-user.target" ];
-    requires = [ "hl2dm.service" ];
+    requires = [ "podman-hl2dm.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = "yes";
+      StandardOutput = "journal";
+      StandardError = "journal";
     };
     script = ''
-      sleep 10
+      echo "Starting HL2DM configuration..."
+      sleep 5
 
       # Create server_local.cfg with RCON password if it doesn't exist
       LOCALCFG="/var/lib/hl2dm/serverfiles/hl2mp/cfg/server_local.cfg"
+      
+      echo "Checking for $LOCALCFG"
 
       if [[ ! -f "$LOCALCFG" ]]; then
+        echo "Creating server_local.cfg..."
         RCON_PASS=$(cat ${config.age.secrets.hl2dm-rcon.path})
         echo "// Local server configuration (not managed by NixOS)" > "$LOCALCFG"
         echo "rcon_password \"$RCON_PASS\"" >> "$LOCALCFG"
@@ -88,7 +94,11 @@
         echo "hostname \"Chloe's Half-Life 2 Deathmatch Server\"" >> "$LOCALCFG"
         chmod 644 "$LOCALCFG"
         echo "RCON password configured in server_local.cfg"
+      else
+        echo "server_local.cfg already exists"
       fi
+      
+      ls -la "$LOCALCFG"
     '';
   };
 
