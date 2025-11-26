@@ -13,6 +13,10 @@
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "d /var/lib/srcds 0755 root root -"
+  ];
+
   services.srcds = {
     enable = true;
     openFirewall = true;
