@@ -41,7 +41,7 @@
 
     ## Source Dedicated Server management
     srcds-nix = {
-      url = "github:ihaveamac/srcds.nix";
+      url = "github:ihaveamac/srcds-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
