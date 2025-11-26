@@ -10,14 +10,14 @@
     hl2dm-rcon = {
       file = ../../secrets/hl2dm-rcon.age;
       mode = "600";
-      user = "srcds";
+      owner = "srcds";
       group = "srcds";
     };
 
     hl2dm-server = {
       file = ../../secrets/hl2dm-server.age;
       mode = "600";
-      user = "srcds";
+      owner = "srcds";
       group = "srcds";
     };
   };
