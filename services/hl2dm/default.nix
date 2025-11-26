@@ -23,7 +23,7 @@
 
       rcon = {
         enable = true;
-        password = config.age.secrets.hl2dm.path;
+        password = config.age.secrets.hl2dm-rcon.path;
       };
 
       serverConfig = {
