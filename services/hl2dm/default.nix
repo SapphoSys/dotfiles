@@ -1,4 +1,9 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   age.secrets = {
@@ -18,7 +23,20 @@
     "d /var/lib/srcds/.local 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share/Steam 0755 srcds srcds -"
+    "d /var/lib/srcds/.local/share/Steam/ubuntu12_32 0755 srcds srcds -"
   ];
+
+  systemd.services.srcds-setup = {
+    preStart = lib.mkBefore ''
+      # Work around bug in srcds-nix tar extraction
+      # Pre-extract the Steam bootstrap to avoid "tar -C $STEAMDIR -xvf $STEAMDIR" failing
+      if [[ ! -d /var/lib/srcds/.local/share/Steam/ubuntu12_32 ]] || [[ ! -f /var/lib/srcds/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh ]]; then
+        STEAMDIR=/var/lib/srcds/.local/share/Steam
+        mkdir -p $STEAMDIR
+        ${pkgs.steam-unwrapped}/bin/steam-runtime-launcher-system setup "$STEAMDIR/ubuntu12_32" 2>/dev/null || true
+      fi
+    '';
+  };
 
   services.srcds = {
     enable = true;
