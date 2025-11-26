@@ -1,0 +1,28 @@
+name: Update Flake Inputs
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: # allows manual triggering
+
+jobs:
+  update-flake:
+    name: Update flake inputs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Determinate Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+      
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-title: "chore(flake): update inputs"
+          pr-labels: |
+            dependencies
+            automated

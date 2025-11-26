@@ -1,0 +1,26 @@
+name: Flake Check - Linux
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  flake-check:
+    name: Check flake on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      
+      - name: Use Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      
+      - name: Run flake check
+        run: nix flake check
+      
+      - name: Check flake outputs
+        run: nix flake show
