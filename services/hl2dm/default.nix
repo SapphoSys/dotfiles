@@ -72,6 +72,11 @@
         cp -f ${pkgs.steam-unwrapped}/lib/steam/linux32/steamclient.so $SDKDIR/steamclient.so || true
       fi
 
+      # Initialize steamcmd to ensure Steam SDK is properly set up
+      echo "Initializing Steam SDK..."
+      HOME=/var/lib/srcds steamcmd +exit 2>/dev/null || true
+      sleep 2
+
       # Try to bootstrap HL2DM server files
       if [[ ! -f /var/lib/srcds/my-hl2dm-server/hl2mp/srcds_run ]]; then
         echo "Attempting to download HL2DM server files..."
@@ -81,6 +86,14 @@
           +app_update 232370 validate \
           +exit || echo "SteamCMD download attempt completed (may have failed due to licensing)"
       fi
+    '';
+  };
+
+  systemd.services."srcds-game-my-hl2dm-server" = {
+    postStart = lib.mkBefore ''
+      # Give Steam time to fully initialize before accepting connections
+      echo "Waiting for Steam API initialization..."
+      sleep 5
     '';
   };
 
@@ -100,9 +113,14 @@
       };
 
       serverConfig = {
-        hostname = "Chloe's HL2DM server on NixOS";
+        hostname = "Chloe's Half-Life 2 Deathmatch server on NixOS";
         sv_contact = "chloe@sapphic.moe";
       };
+
+      extraArgs = [
+        "+sv_hibernate_when_empty 0"
+        "+net_start_thread 1"
+      ];
     };
   };
 
