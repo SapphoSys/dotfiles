@@ -72,37 +72,21 @@
     script = ''
       sleep 5
 
-      # Copy Steam SDK files - try multiple locations
+      # Copy Steam SDK files from steamcmd installation
       SDKDIR="/var/lib/hl2dm/.steam/sdk32"
-      STEAMDIR="/var/lib/hl2dm/Steam"
+      STEAMCMDDIR="/var/lib/hl2dm/steamcmd/linux32"
 
-      echo "Looking for steamclient.so in Steam directory..."
-      find "$STEAMDIR" -name "steamclient.so*" 2>/dev/null | head -10
-
-      # Find and copy any steamclient.so
-      if [[ -f "$STEAMDIR/linux32/steamclient.so" ]]; then
-        echo "Found: $STEAMDIR/linux32/steamclient.so"
-        cp -vf "$STEAMDIR/linux32/steamclient.so" "$SDKDIR/steamclient.so" 2>&1
-      elif [[ -f "$STEAMDIR/steamclient.so" ]]; then
-        echo "Found: $STEAMDIR/steamclient.so"
-        cp -vf "$STEAMDIR/steamclient.so" "$SDKDIR/steamclient.so" 2>&1
-      else
-        echo "steamclient.so not found - extracting from Steam runtime..."
-        # Try to extract from Steam runtime
-        if [[ -d "$STEAMDIR/ubuntu12_32/steam-runtime" ]]; then
-          find "$STEAMDIR/ubuntu12_32/steam-runtime" -name "steamclient.so*" -exec cp -vf {} "$SDKDIR/" \;
-        fi
-      fi
-
-      ls -la "$SDKDIR/" 2>/dev/null || echo "SDK directory empty"
-
-      # Only restart if we found the file
-      if [[ -f "$SDKDIR/steamclient.so" ]]; then
-        echo "SDK files ready, restarting server..."
+      echo "Copying SDK files from $STEAMCMDDIR to $SDKDIR"
+      
+      if [[ -d "$STEAMCMDDIR" ]]; then
+        cp -vf "$STEAMCMDDIR"/* "$SDKDIR/" 2>&1 | head -20
+        ls -la "$SDKDIR/steamclient.so" 2>/dev/null && echo "✓ SDK files copied successfully"
+        
+        # Restart server to pick up SDK files
         sleep 2
         systemctl restart podman-hl2dm.service || true
       else
-        echo "Warning: steamclient.so still not found after copy attempt"
+        echo "Error: steamcmd/linux32 directory not found at $STEAMCMDDIR"
       fi
     '';
   };
