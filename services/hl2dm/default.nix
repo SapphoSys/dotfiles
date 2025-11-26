@@ -26,7 +26,7 @@
         password = config.age.secrets.hl2dm.path;
       };
 
-      config = {
+      serverConfig = {
         hostname = "Chloe's HL2DM server on NixOS";
         sv_contact = "chloe@sapphic.moe";
         sv_password = config.age.secrets.hl2dm-server.path;
