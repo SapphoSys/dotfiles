@@ -72,21 +72,38 @@
     script = ''
       sleep 5
 
-      # Copy Steam SDK files
+      # Copy Steam SDK files - try multiple locations
       SDKDIR="/var/lib/hl2dm/.steam/sdk32"
       STEAMDIR="/var/lib/hl2dm/Steam"
 
+      echo "Looking for steamclient.so in Steam directory..."
+      find "$STEAMDIR" -name "steamclient.so*" 2>/dev/null | head -10
+
+      # Find and copy any steamclient.so
       if [[ -f "$STEAMDIR/linux32/steamclient.so" ]]; then
-        cp -f "$STEAMDIR/linux32/steamclient.so" "$SDKDIR/steamclient.so" 2>/dev/null || true
+        echo "Found: $STEAMDIR/linux32/steamclient.so"
+        cp -vf "$STEAMDIR/linux32/steamclient.so" "$SDKDIR/steamclient.so" 2>&1
+      elif [[ -f "$STEAMDIR/steamclient.so" ]]; then
+        echo "Found: $STEAMDIR/steamclient.so"
+        cp -vf "$STEAMDIR/steamclient.so" "$SDKDIR/steamclient.so" 2>&1
+      else
+        echo "steamclient.so not found - extracting from Steam runtime..."
+        # Try to extract from Steam runtime
+        if [[ -d "$STEAMDIR/ubuntu12_32/steam-runtime" ]]; then
+          find "$STEAMDIR/ubuntu12_32/steam-runtime" -name "steamclient.so*" -exec cp -vf {} "$SDKDIR/" \;
+        fi
       fi
 
-      if [[ -f "$STEAMDIR/steamclient.so" ]]; then
-        cp -f "$STEAMDIR/steamclient.so" "$SDKDIR/steamclient.so" 2>/dev/null || true
-      fi
+      ls -la "$SDKDIR/" 2>/dev/null || echo "SDK directory empty"
 
-      # Restart server to pick up SDK files
-      sleep 2
-      systemctl restart podman-hl2dm.service || true
+      # Only restart if we found the file
+      if [[ -f "$SDKDIR/steamclient.so" ]]; then
+        echo "SDK files ready, restarting server..."
+        sleep 2
+        systemctl restart podman-hl2dm.service || true
+      else
+        echo "Warning: steamclient.so still not found after copy attempt"
+      fi
     '';
   };
 
@@ -117,7 +134,23 @@
     '';
   };
 
-  # Firewall configuration for game server
-  settings.firewall.allowedUDPPorts = [ 27015 ];
-  settings.firewall.allowedTCPPorts = [ 27015 ];
+  # Debug service to find where steamclient.so actually is
+  systemd.services.hl2dm-sdk-debug = {
+    after = [ "hl2dm.service" ];
+    wantedBy = [ ];
+    requires = [ "hl2dm.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      sleep 3
+      echo "=== HL2DM SDK Debug ==="
+      echo "Steam directory contents:"
+      find /var/lib/hl2dm/Steam -type f -name "*.so*" 2>/dev/null | head -20
+      echo ""
+      echo "Container Steam directory contents:"
+      podman exec hl2dm find /serverdata/Steam -type f -name "*.so*" 2>/dev/null | head -20 || true
+    '';
+  };
 }
