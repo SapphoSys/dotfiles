@@ -39,6 +39,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## Source Dedicated Server management
+    srcds-nix = {
+      url = "github:ihaveamac/srcds.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ## Secrets management
     ragenix = {
       url = "github:yaxitech/ragenix";
