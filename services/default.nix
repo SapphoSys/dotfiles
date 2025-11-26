@@ -5,6 +5,7 @@
     ./caddy
     ./destiny-labeler
     ./fail2ban
+    ./hl2dm
     ./glance
     ./knot
     ./lanyard
