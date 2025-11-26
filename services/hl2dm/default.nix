@@ -53,42 +53,16 @@
       "/var/lib/hl2dm/serverfiles:/serverdata/serverfiles"
       "/var/lib/hl2dm/.steam:/serverdata/.steam"
       "/var/lib/hl2dm/Steam:/serverdata/Steam"
+      "${./entrypoint.sh}:/entrypoint.sh:ro"
     ];
+
+    # Use custom entrypoint to set up SDK before server starts
+    cmd = [ "/entrypoint.sh" ];
 
     extraOptions = [
       "--restart=always"
+      "--entrypoint=/bin/bash"
     ];
-  };
-
-  # Post-startup: Copy Steam SDK files from steamcmd to SDK directory
-  systemd.services.hl2dm-sdk-init = {
-    after = [ "hl2dm.service" ];
-    wantedBy = [ "multi-user.target" ];
-    requires = [ "hl2dm.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
-    };
-    script = ''
-      sleep 5
-
-      # Copy Steam SDK files from steamcmd installation
-      SDKDIR="/var/lib/hl2dm/.steam/sdk32"
-      STEAMCMDDIR="/var/lib/hl2dm/steamcmd/linux32"
-
-      echo "Copying SDK files from $STEAMCMDDIR to $SDKDIR"
-      
-      if [[ -d "$STEAMCMDDIR" ]]; then
-        cp -vf "$STEAMCMDDIR"/* "$SDKDIR/" 2>&1 | head -20
-        ls -la "$SDKDIR/steamclient.so" 2>/dev/null && echo "✓ SDK files copied successfully"
-        
-        # Restart server to pick up SDK files
-        sleep 2
-        systemctl restart podman-hl2dm.service || true
-      else
-        echo "Error: steamcmd/linux32 directory not found at $STEAMCMDDIR"
-      fi
-    '';
   };
 
   # Post-startup hook to configure RCON password
@@ -118,23 +92,7 @@
     '';
   };
 
-  # Debug service to find where steamclient.so actually is
-  systemd.services.hl2dm-sdk-debug = {
-    after = [ "hl2dm.service" ];
-    wantedBy = [ ];
-    requires = [ "hl2dm.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = "yes";
-    };
-    script = ''
-      sleep 3
-      echo "=== HL2DM SDK Debug ==="
-      echo "Steam directory contents:"
-      find /var/lib/hl2dm/Steam -type f -name "*.so*" 2>/dev/null | head -20
-      echo ""
-      echo "Container Steam directory contents:"
-      podman exec hl2dm find /serverdata/Steam -type f -name "*.so*" 2>/dev/null | head -20 || true
-    '';
-  };
+  # Firewall configuration for game server
+  settings.firewall.allowedUDPPorts = [ 27015 ];
+  settings.firewall.allowedTCPPorts = [ 27015 ];
 }
