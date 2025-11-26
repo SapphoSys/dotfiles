@@ -24,19 +24,25 @@
     "d /var/lib/srcds/.local/share 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share/Steam 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share/Steam/ubuntu12_32 0755 srcds srcds -"
+    "d /var/lib/srcds/.steam 0755 srcds srcds -"
+    "d /var/lib/srcds/.steam/sdk32 0755 srcds srcds -"
     "d /var/lib/srcds/my-hl2dm-server 0755 srcds srcds -"
     "d /var/lib/srcds/my-hl2dm-server/hl2mp 0755 srcds srcds -"
   ];
 
   systemd.services.srcds-setup = {
-    path = [ pkgs.gnutar pkgs.xz pkgs.steamcmd ];
-    
+    path = [
+      pkgs.gnutar
+      pkgs.xz
+      pkgs.steamcmd
+    ];
+
     preStart = lib.mkBefore ''
       # Work around bug in srcds-nix tar extraction
       # Pre-extract the Steam bootstrap to avoid "tar -C $STEAMDIR -xvf $STEAMDIR" failing
       STEAMDIR=/var/lib/srcds/.local/share/Steam
       mkdir -p $STEAMDIR
-      
+
       if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
         echo "Setting up Steam runtime..."
         # Extract bootstrap directly from steam-unwrapped
@@ -45,11 +51,25 @@
           tar -C $STEAMDIR -xf ${pkgs.steam-unwrapped}/lib/steam/bootstraplinux_ubuntu12_32.tar.xz || true
         fi
       fi
-      
+
       if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
         echo "WARNING: Steam runtime not found at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
       else
         echo "Steam runtime ready at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
+      fi
+
+      # Set up Steam SDK files to avoid runtime errors
+      echo "Setting up Steam SDK files..."
+      SDKDIR=/var/lib/srcds/.steam/sdk32
+      mkdir -p $SDKDIR
+      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/steamclient.so ]]; then
+        cp -f ${pkgs.steam-unwrapped}/lib/steam/steamclient.so $SDKDIR/steamclient.so || true
+      fi
+      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/steamclient32.so ]]; then
+        cp -f ${pkgs.steam-unwrapped}/lib/steam/steamclient32.so $SDKDIR/steamclient32.so || true
+      fi
+      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/linux32/steamclient.so ]]; then
+        cp -f ${pkgs.steam-unwrapped}/lib/steam/linux32/steamclient.so $SDKDIR/steamclient.so || true
       fi
 
       # Try to bootstrap HL2DM server files
@@ -72,6 +92,7 @@
       appId = 232370;
       autoUpdate = false;
       gamePort = 27015;
+      startingMap = "dm_powerhouse";
 
       rcon = {
         enable = true;
