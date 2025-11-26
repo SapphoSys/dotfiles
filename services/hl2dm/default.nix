@@ -32,6 +32,7 @@
     "d /var/lib/srcds/.steam/sdk32 0755 srcds srcds -"
     "d /var/lib/srcds/my-hl2dm-server 0755 srcds srcds -"
     "d /var/lib/srcds/my-hl2dm-server/hl2mp 0755 srcds srcds -"
+    "d /var/lib/srcds/my-hl2dm-server/hl2mp/cfg 0755 srcds srcds -"
   ];
 
   systemd.services.srcds-setup = {
@@ -94,22 +95,25 @@
   };
 
   systemd.services."srcds-game-my-hl2dm-server" = {
-    preStart = lib.mkBefore ''
-      # Inject actual RCON password from agenix secret into server.cfg
-      SERVERDIR=/var/lib/srcds/my-hl2dm-server/hl2mp
-      if [[ -f $SERVERDIR/cfg/server.cfg ]]; then
-        RCON_PASS=$(cat ${config.age.secrets.hl2dm-rcon.path})
-        sed -i "s|rcon_password /run/agenix/hl2dm-rcon|rcon_password $RCON_PASS|g" $SERVERDIR/cfg/server.cfg
-      fi
-    '';
-
     postStart = lib.mkBefore ''
+      # Write RCON password to server_local.cfg so it's not exposed in NixOS config
+      sleep 1
+      SERVERDIR=/var/lib/srcds/my-hl2dm-server/hl2mp
+      LOCALCFG=$SERVERDIR/cfg/server_local.cfg
+
+      if [[ ! -f $LOCALCFG ]]; then
+        RCON_PASS=$(cat ${config.age.secrets.hl2dm-rcon.path})
+        echo "// Local server configuration (not managed by NixOS)" > "$LOCALCFG"
+        echo "rcon_password $RCON_PASS" >> "$LOCALCFG"
+        chmod 664 "$LOCALCFG"
+        echo "RCON password configured in server_local.cfg"
+      fi
+
       # Give Steam time to fully initialize before accepting connections
       echo "Waiting for Steam API initialization..."
       sleep 5
     '';
   };
-
   services.srcds = {
     enable = true;
     openFirewall = true;
