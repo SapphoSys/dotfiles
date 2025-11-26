@@ -24,6 +24,8 @@
     "d /var/lib/srcds/.local/share 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share/Steam 0755 srcds srcds -"
     "d /var/lib/srcds/.local/share/Steam/ubuntu12_32 0755 srcds srcds -"
+    "d /var/lib/srcds/my-hl2dm-server 0755 srcds srcds -"
+    "d /var/lib/srcds/my-hl2dm-server/hl2mp 0755 srcds srcds -"
   ];
 
   systemd.services.srcds-setup = {
@@ -35,6 +37,16 @@
         mkdir -p $STEAMDIR
         ${pkgs.steam-unwrapped}/bin/steam-runtime-launcher-system setup "$STEAMDIR/ubuntu12_32" 2>/dev/null || true
       fi
+
+      # Try to bootstrap HL2DM server files
+      if [[ ! -f /var/lib/srcds/my-hl2dm-server/hl2mp/srcds_run ]]; then
+        echo "Attempting to download HL2DM server files..."
+        HOME=/var/lib/srcds ${pkgs.steamcmd}/bin/steamcmd \
+          +force_install_dir /var/lib/srcds/my-hl2dm-server \
+          +login anonymous \
+          +app_update 232370 validate \
+          +exit || echo "SteamCMD download attempt completed (may have failed due to licensing)"
+      fi
     '';
   };
 
@@ -44,6 +56,7 @@
 
     games.my-hl2dm-server = {
       appId = 232370;
+      autoUpdate = false;
       gamePort = 27015;
 
       rcon = {
