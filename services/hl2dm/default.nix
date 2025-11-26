@@ -1,7 +1,5 @@
 {
   config,
-  lib,
-  pkgs,
   ...
 }:
 
@@ -10,135 +8,81 @@
     hl2dm-rcon = {
       file = ../../secrets/hl2dm-rcon.age;
       mode = "600";
-      owner = "srcds";
-      group = "srcds";
     };
 
     hl2dm-server = {
       file = ../../secrets/hl2dm-server.age;
       mode = "600";
-      owner = "srcds";
-      group = "srcds";
     };
   };
 
+  # Create data directories for persistent server files and configuration
   systemd.tmpfiles.rules = [
-    "d /var/lib/srcds 0755 srcds srcds -"
-    "d /var/lib/srcds/.local 0755 srcds srcds -"
-    "d /var/lib/srcds/.local/share 0755 srcds srcds -"
-    "d /var/lib/srcds/.local/share/Steam 0755 srcds srcds -"
-    "d /var/lib/srcds/.local/share/Steam/ubuntu12_32 0755 srcds srcds -"
-    "d /var/lib/srcds/.steam 0755 srcds srcds -"
-    "d /var/lib/srcds/.steam/sdk32 0755 srcds srcds -"
-    "d /var/lib/srcds/my-hl2dm-server 0755 srcds srcds -"
-    "d /var/lib/srcds/my-hl2dm-server/hl2mp 0755 srcds srcds -"
-    "d /var/lib/srcds/my-hl2dm-server/hl2mp/cfg 0755 srcds srcds -"
+    "d /var/lib/hl2dm 0755 root root -"
+    "d /var/lib/hl2dm/steamcmd 0755 root root -"
+    "d /var/lib/hl2dm/serverfiles 0755 root root -"
+    "d /var/lib/hl2dm/serverfiles/hl2mp 0755 root root -"
+    "d /var/lib/hl2dm/serverfiles/hl2mp/cfg 0755 root root -"
   ];
 
-  systemd.services.srcds-setup = {
-    path = [
-      pkgs.gnutar
-      pkgs.xz
-      pkgs.steamcmd
+  # Container-based HL2DM server using ich777's steamcmd docker image
+  virtualisation.oci-containers.containers.hl2dm = {
+    image = "ich777/steamcmd:hl2dm";
+    autoStart = true;
+    autoRemoveOnStop = false;
+    ports = [
+      "27015:27015/udp"
+      "27015:27015/tcp"
     ];
 
-    preStart = lib.mkBefore ''
-      # Work around bug in srcds-nix tar extraction
-      # Pre-extract the Steam bootstrap to avoid "tar -C $STEAMDIR -xvf $STEAMDIR" failing
-      STEAMDIR=/var/lib/srcds/.local/share/Steam
-      mkdir -p $STEAMDIR
+    environment = {
+      GAME_ID = "232370";
+      GAME_NAME = "hl2mp";
+      GAME_PORT = "27015";
+      GAME_PARAMS = "+sv_hibernate_when_empty 0 +net_start_thread 1 +maxplayers 24 +map dm_lockdown";
+      UID = "99";
+      GID = "100";
+    };
 
-      if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
-        echo "Setting up Steam runtime..."
-        # Extract bootstrap directly from steam-unwrapped
-        if [[ -f ${pkgs.steam-unwrapped}/lib/steam/bootstraplinux_ubuntu12_32.tar.xz ]]; then
-          echo "Extracting Steam runtime from steam-unwrapped..."
-          tar -C $STEAMDIR -xf ${pkgs.steam-unwrapped}/lib/steam/bootstraplinux_ubuntu12_32.tar.xz || true
-        fi
-      fi
+    # Mount volumes for persistent server files
+    volumes = [
+      "/var/lib/hl2dm/steamcmd:/serverdata/steamcmd"
+      "/var/lib/hl2dm/serverfiles:/serverdata/serverfiles"
+    ];
 
-      if [[ ! -f $STEAMDIR/ubuntu12_32/steam-runtime/run.sh ]]; then
-        echo "WARNING: Steam runtime not found at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
-      else
-        echo "Steam runtime ready at $STEAMDIR/ubuntu12_32/steam-runtime/run.sh"
-      fi
-
-      # Set up Steam SDK files to avoid runtime errors
-      echo "Setting up Steam SDK files..."
-      SDKDIR=/var/lib/srcds/.steam/sdk32
-      mkdir -p $SDKDIR
-      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/steamclient.so ]]; then
-        cp -f ${pkgs.steam-unwrapped}/lib/steam/steamclient.so $SDKDIR/steamclient.so || true
-      fi
-      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/steamclient32.so ]]; then
-        cp -f ${pkgs.steam-unwrapped}/lib/steam/steamclient32.so $SDKDIR/steamclient32.so || true
-      fi
-      if [[ -f ${pkgs.steam-unwrapped}/lib/steam/linux32/steamclient.so ]]; then
-        cp -f ${pkgs.steam-unwrapped}/lib/steam/linux32/steamclient.so $SDKDIR/steamclient.so || true
-      fi
-
-      # Initialize steamcmd to ensure Steam SDK is properly set up
-      echo "Initializing Steam SDK..."
-      HOME=/var/lib/srcds steamcmd +exit 2>/dev/null || true
-      sleep 2
-
-      # Try to bootstrap HL2DM server files
-      if [[ ! -f /var/lib/srcds/my-hl2dm-server/hl2mp/srcds_run ]]; then
-        echo "Attempting to download HL2DM server files..."
-        HOME=/var/lib/srcds steamcmd \
-          +force_install_dir /var/lib/srcds/my-hl2dm-server \
-          +login anonymous \
-          +app_update 232370 validate \
-          +exit || echo "SteamCMD download attempt completed (may have failed due to licensing)"
-      fi
-    '';
+    extraOptions = [
+      "--restart=always"
+    ];
   };
 
-  systemd.services."srcds-game-my-hl2dm-server" = {
-    postStart = lib.mkBefore ''
-      # Write RCON password to server_local.cfg so it's not exposed in NixOS config
-      sleep 1
-      SERVERDIR=/var/lib/srcds/my-hl2dm-server/hl2mp
-      LOCALCFG=$SERVERDIR/cfg/server_local.cfg
+  # Post-startup hook to configure RCON password
+  systemd.services.hl2dm-configure = {
+    after = [ "hl2dm.service" ];
+    wantedBy = [ "multi-user.target" ];
+    requires = [ "hl2dm.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = "yes";
+    };
+    script = ''
+      sleep 10
 
-      if [[ ! -f $LOCALCFG ]]; then
+      # Create server_local.cfg with RCON password if it doesn't exist
+      LOCALCFG="/var/lib/hl2dm/serverfiles/hl2mp/cfg/server_local.cfg"
+
+      if [[ ! -f "$LOCALCFG" ]]; then
         RCON_PASS=$(cat ${config.age.secrets.hl2dm-rcon.path})
         echo "// Local server configuration (not managed by NixOS)" > "$LOCALCFG"
-        echo "rcon_password $RCON_PASS" >> "$LOCALCFG"
-        chmod 664 "$LOCALCFG"
+        echo "rcon_password \"$RCON_PASS\"" >> "$LOCALCFG"
+        echo "sv_password \"\"" >> "$LOCALCFG"
+        echo "hostname \"Chloe's Half-Life 2 Deathmatch Server\"" >> "$LOCALCFG"
+        chmod 644 "$LOCALCFG"
         echo "RCON password configured in server_local.cfg"
       fi
-
-      # Give Steam time to fully initialize before accepting connections
-      echo "Waiting for Steam API initialization..."
-      sleep 5
     '';
   };
-  services.srcds = {
-    enable = true;
-    openFirewall = true;
 
-    games.my-hl2dm-server = {
-      appId = 232370;
-      autoUpdate = false;
-      gamePort = 27015;
-      startingMap = "dm_powerhouse";
-
-      rcon = {
-        enable = true;
-        password = config.age.secrets.hl2dm-rcon.path;
-      };
-
-      serverConfig = {
-        hostname = "Chloe's Half-Life 2 Deathmatch server on NixOS";
-      };
-
-      extraArgs = [
-        "+sv_hibernate_when_empty 0"
-        "+net_start_thread 1"
-      ];
-    };
-  };
-
+  # Firewall configuration for game server
   settings.firewall.allowedUDPPorts = [ 27015 ];
+  settings.firewall.allowedTCPPorts = [ 27015 ];
 }
