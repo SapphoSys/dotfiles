@@ -86,7 +86,7 @@
 
       # Restart server to pick up SDK files
       sleep 2
-      ${config.boot.systemd.package}/bin/systemctl restart podman-hl2dm.service || true
+      systemctl restart podman-hl2dm.service || true
     '';
   };
 
