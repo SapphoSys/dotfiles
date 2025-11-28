@@ -11,7 +11,7 @@
     package = pkgs.caddy.withPlugins {
       plugins = [
         "github.com/caddy-dns/bunny@v1.2.0"
-        "github.com/mholt/caddy-l4@v0.0.0-20240815195819-06266cc7a7f2"
+        "github.com/mholt/caddy-l4"
       ];
       hash = "sha256-LeLqz0LQyKwFekx7w9LJvv8Qj8W0Ol1RYKn0NZN3Txc=";
     };
