@@ -15,11 +15,20 @@ mkdir -p "$ADDONSDIR"
 
 # Download and install SourceMod (Latest from 1.13 branch)
 if [[ ! -f "$SM_DIR/bin/sourcemod.so" ]] && [[ ! -f "$SM_DIR/bin/sourcepawn.so" ]]; then
-  echo "Downloading SourceMod from https://sm.alliedmods.net/smdrop/1.13/sourcemod-latest-linux..."
+  echo "Downloading SourceMod..."
   cd /tmp
   
-  # Download with -L to follow symlinks
-  if wget -L --timeout=30 "https://sm.alliedmods.net/smdrop/1.13/sourcemod-latest-linux" -O sourcemod.tar.gz 2>&1; then
+  # Get the latest filename from the symlink
+  LATEST_SM=$(wget -q -O - "https://sm.alliedmods.net/smdrop/1.13/sourcemod-latest-linux" 2>/dev/null | tr -d '\n' | tr -d ' ')
+  
+  if [[ -z "$LATEST_SM" ]]; then
+    echo "✗ Failed to determine latest SourceMod version"
+    exit 1
+  fi
+  
+  echo "Latest SourceMod build: $LATEST_SM"
+  
+  if wget --timeout=30 "https://sm.alliedmods.net/smdrop/1.13/$LATEST_SM" -O sourcemod.tar.gz 2>&1; then
     echo "Download completed, checking file..."
     if [[ -f sourcemod.tar.gz ]] && [[ -s sourcemod.tar.gz ]]; then
       echo "Extracting SourceMod..."
@@ -57,11 +66,20 @@ fi
 
 # Download and install MetaMod:Source (Latest from 2.0 branch)
 if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
-  echo "Downloading MetaMod:Source from https://mms.alliedmods.net/mmsdrop/2.0/mmsource-latest-linux..."
+  echo "Downloading MetaMod:Source..."
   cd /tmp
   
-  # Download with -L to follow symlinks
-  if wget -L --timeout=30 "https://mms.alliedmods.net/mmsdrop/2.0/mmsource-latest-linux" -O metamod.tar.gz 2>&1; then
+  # Get the latest filename from the symlink
+  LATEST_MM=$(wget -q -O - "https://mms.alliedmods.net/mmsdrop/2.0/mmsource-latest-linux" 2>/dev/null | tr -d '\n' | tr -d ' ')
+  
+  if [[ -z "$LATEST_MM" ]]; then
+    echo "✗ Failed to determine latest MetaMod:Source version"
+    exit 1
+  fi
+  
+  echo "Latest MetaMod:Source build: $LATEST_MM"
+  
+  if wget --timeout=30 "https://mms.alliedmods.net/mmsdrop/2.0/$LATEST_MM" -O metamod.tar.gz 2>&1; then
     echo "Download completed, checking file..."
     if [[ -f metamod.tar.gz ]] && [[ -s metamod.tar.gz ]]; then
       echo "Extracting MetaMod:Source..."
