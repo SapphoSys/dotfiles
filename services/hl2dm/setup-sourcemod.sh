@@ -14,6 +14,7 @@ MM_DIR="$ADDONSDIR/metamod"
 mkdir -p "$ADDONSDIR"
 
 # Download and install SourceMod (Latest from 1.13 branch)
+# Only download if not already installed
 if [[ ! -f "$SM_DIR/bin/sourcemod.so" ]] && [[ ! -f "$SM_DIR/bin/sourcepawn.so" ]]; then
   echo "Downloading SourceMod..."
   cd /tmp
@@ -115,20 +116,24 @@ fi
 echo "Setting permissions on addons directory..."
 chmod -R 755 "$ADDONSDIR" 2>&1 || true
 
-# Fix MetaMod binary - HL2DM is 32-bit, ensure we have the right binary
-if [[ -f "$MM_DIR/bin/linux64/server.so" ]] && [[ ! -f "$MM_DIR/bin/server.so" ]]; then
-  echo "Fixing MetaMod for 32-bit server..."
-  if [[ -f "$MM_DIR/bin/server.so.1" ]]; then
-    # Use the 32-bit version if it exists
-    cp "$MM_DIR/bin/server.so.1" "$MM_DIR/bin/server.so" 2>&1 || true
-  elif [[ -f "$MM_DIR/bin/server_i386.so" ]]; then
-    # Or the i386 version
-    cp "$MM_DIR/bin/server_i386.so" "$MM_DIR/bin/server.so" 2>&1 || true
-  else
-    echo "⚠ Warning: Could not find 32-bit MetaMod binary"
-    # List what we have
-    find "$MM_DIR/bin" -name "*.so*" 2>/dev/null | head -10 || true
-  fi
+# Fix MetaMod binary - HL2DM is 32-bit, so remove 64-bit directories to force 32-bit loading
+if [[ -d "$MM_DIR/bin/linux64" ]]; then
+  echo "Removing 64-bit MetaMod binaries (HL2DM is 32-bit only)..."
+  rm -rf "$MM_DIR/bin/linux64" 2>&1 || true
+fi
+
+if [[ -d "$MM_DIR/bin/linuxsteamrt64" ]]; then
+  echo "Removing SteamRT 64-bit MetaMod binaries..."
+  rm -rf "$MM_DIR/bin/linuxsteamrt64" 2>&1 || true
+fi
+
+# Verify we have the 32-bit server.so
+if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
+  echo "⚠ Warning: Could not find 32-bit MetaMod binary"
+  echo "Available binaries:"
+  find "$MM_DIR/bin" -maxdepth 1 -name "*.so" 2>/dev/null | head -10 || true
+else
+  echo "✓ MetaMod 32-bit binary confirmed"
 fi
 
 # Copy SourceMod configuration files if they exist

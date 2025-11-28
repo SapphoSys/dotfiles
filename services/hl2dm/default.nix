@@ -55,8 +55,8 @@
       "/var/lib/hl2dm/.steam:/serverdata/.steam"
       "/var/lib/hl2dm/Steam:/serverdata/Steam"
       "${./setup-sourcemod.sh}:/opt/custom/user.sh:ro"
-      "${./configs/sourcemod.cfg}:/serverdata/sourcemod.cfg:ro"
-      "${./configs/admins.cfg}:/serverdata/admins.cfg:ro"
+      "${./configs/sourcemod.cfg}:/serverdata/sourcemod.cfg"
+      "${./configs/admins.cfg}:/serverdata/admins.cfg"
     ];
 
     # Use default entrypoint (ich777 image handles it)
