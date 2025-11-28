@@ -34,8 +34,8 @@
     autoStart = true;
     autoRemoveOnStop = false;
     ports = [
-      "27016:27015/udp"
-      "27016:27015/tcp"
+      "27015:27015/udp"
+      "27015:27015/tcp"
     ];
 
     environment = {
