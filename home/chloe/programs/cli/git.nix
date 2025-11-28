@@ -10,7 +10,7 @@ let
 
   opSshSignPath =
     if (osConfig ? wsl) then
-      "/mnt/c/Users/Chloe/AppData/Local/1Password/app/8/op-ssh-sign-wsl"
+      "/mnt/c/Users/Chloe/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
     else if pkgs.stdenv.hostPlatform.isDarwin then
       "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
     else
