@@ -115,7 +115,7 @@
     '';
   };
 
-  # Firewall configuration - testing L4 proxying
-  # settings.firewall.allowedUDPPorts = [ 27015 ];
-  # settings.firewall.allowedTCPPorts = [ 27015 ];
+  # Firewall configuration for game server
+  settings.firewall.allowedUDPPorts = [ 27015 ];
+  settings.firewall.allowedTCPPorts = [ 27015 ];
 }
