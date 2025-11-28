@@ -127,13 +127,17 @@ if [[ -d "$MM_DIR/bin/linuxsteamrt64" ]]; then
   rm -rf "$MM_DIR/bin/linuxsteamrt64" 2>&1 || true
 fi
 
-# Verify we have the 32-bit server.so
-if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
+# Check for 32-bit binary in different possible locations
+if [[ -f "$MM_DIR/bin/server.so" ]]; then
+  echo "✓ MetaMod 32-bit binary confirmed at $MM_DIR/bin/server.so"
+elif [[ -f "$MM_DIR/bin/linux32/server.so" ]]; then
+  echo "Found MetaMod 32-bit binary in linux32 subdirectory, copying to bin/"
+  cp "$MM_DIR/bin/linux32/server.so" "$MM_DIR/bin/server.so"
+  echo "✓ MetaMod 32-bit binary copied to $MM_DIR/bin/server.so"
+else
   echo "⚠ Warning: Could not find 32-bit MetaMod binary"
   echo "Available binaries:"
-  find "$MM_DIR/bin" -maxdepth 1 -name "*.so" 2>/dev/null | head -10 || true
-else
-  echo "✓ MetaMod 32-bit binary confirmed"
+  find "$MM_DIR/bin" -name "*.so" 2>/dev/null | head -20 || true
 fi
 
 # Copy SourceMod configuration files if they exist
