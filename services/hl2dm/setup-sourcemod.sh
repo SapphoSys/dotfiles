@@ -14,7 +14,7 @@ MM_DIR="$ADDONSDIR/metamod"
 mkdir -p "$ADDONSDIR"
 
 # Download and install SourceMod (Latest from 1.13 branch)
-if [[ ! -d "$SM_DIR" ]]; then
+if [[ ! -f "$SM_DIR/bin/sourcemod.so" ]] && [[ ! -f "$SM_DIR/bin/sourcepawn.so" ]]; then
   echo "Downloading SourceMod from https://sm.alliedmods.net/smdrop/1.13/sourcemod-latest-linux..."
   cd /tmp
   
@@ -23,8 +23,19 @@ if [[ ! -d "$SM_DIR" ]]; then
     echo "Download completed, checking file..."
     if [[ -f sourcemod.tar.gz ]] && [[ -s sourcemod.tar.gz ]]; then
       echo "Extracting SourceMod..."
-      if tar -xzf sourcemod.tar.gz -C "$ADDONSDIR" 2>&1; then
-        rm -f sourcemod.tar.gz
+      # Extract to temp dir first to handle top-level directory
+      rm -rf /tmp/sm_extract
+      mkdir -p /tmp/sm_extract
+      if tar -xzf sourcemod.tar.gz -C /tmp/sm_extract 2>&1; then
+        # Move contents, handling if there's a top-level directory
+        if [[ -d /tmp/sm_extract/sourcemod ]]; then
+          # Has top-level sourcemod directory
+          cp -r /tmp/sm_extract/sourcemod/* "$SM_DIR/"
+        else
+          # No top-level directory, contents are directly in root
+          cp -r /tmp/sm_extract/* "$SM_DIR/"
+        fi
+        rm -rf /tmp/sm_extract sourcemod.tar.gz
         echo "✓ SourceMod installed successfully"
       else
         echo "✗ Failed to extract SourceMod tarball"
@@ -45,7 +56,7 @@ else
 fi
 
 # Download and install MetaMod:Source (Latest from 2.0 branch)
-if [[ ! -d "$MM_DIR" ]]; then
+if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
   echo "Downloading MetaMod:Source from https://mms.alliedmods.net/mmsdrop/2.0/mmsource-latest-linux..."
   cd /tmp
   
@@ -54,8 +65,19 @@ if [[ ! -d "$MM_DIR" ]]; then
     echo "Download completed, checking file..."
     if [[ -f metamod.tar.gz ]] && [[ -s metamod.tar.gz ]]; then
       echo "Extracting MetaMod:Source..."
-      if tar -xzf metamod.tar.gz -C "$ADDONSDIR" 2>&1; then
-        rm -f metamod.tar.gz
+      # Extract to temp dir first to handle top-level directory
+      rm -rf /tmp/mm_extract
+      mkdir -p /tmp/mm_extract
+      if tar -xzf metamod.tar.gz -C /tmp/mm_extract 2>&1; then
+        # Move contents, handling if there's a top-level directory
+        if [[ -d /tmp/mm_extract/metamod ]]; then
+          # Has top-level metamod directory
+          cp -r /tmp/mm_extract/metamod/* "$MM_DIR/"
+        else
+          # No top-level directory, contents are directly in root
+          cp -r /tmp/mm_extract/* "$MM_DIR/"
+        fi
+        rm -rf /tmp/mm_extract metamod.tar.gz
         echo "✓ MetaMod:Source installed successfully"
       else
         echo "✗ Failed to extract MetaMod tarball"

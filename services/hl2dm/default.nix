@@ -24,17 +24,9 @@
     "d /var/lib/hl2dm/serverfiles/hl2mp 0755 root root -"
     "d /var/lib/hl2dm/serverfiles/hl2mp/cfg 0755 root root -"
     "d /var/lib/hl2dm/serverfiles/hl2mp/addons 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod/configs 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod/plugins 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod/plugins/disabled 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod/data 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/sourcemod/logs 0755 root root -"
-    "d /var/lib/hl2dm/serverfiles/hl2mp/addons/metamod 0755 root root -"
     "d /var/lib/hl2dm/.steam 0755 root root -"
     "d /var/lib/hl2dm/.steam/sdk32 0755 root root -"
     "d /var/lib/hl2dm/Steam 0755 root root -"
-    "d /var/lib/hl2dm/scripts 0755 root root -"
   ];
 
   # Container-based HL2DM server using ich777's steamcmd docker image
