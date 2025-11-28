@@ -19,6 +19,14 @@
     globalConfig = ''
       debug
       email chloe@sapphic.moe
+      
+      layer4 {
+        0.0.0.0:27015 {
+          route {
+            proxy localhost:27016
+          }
+        }
+      }
     '';
     extraConfig = ''
       (tls_bunny) {
@@ -27,19 +35,8 @@
           resolvers 9.9.9.9 149.112.112.112
         }
       }
-
       (common) {
         encode zstd gzip
-      }
-
-      {
-        layer4 {
-          0.0.0.0:27015 {
-            route {
-              proxy localhost:27016
-            }
-          }
-        }
       }
     '';
     logFormat = ''
