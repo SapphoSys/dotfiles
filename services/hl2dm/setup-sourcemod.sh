@@ -36,24 +36,25 @@ if [[ ! -f "$SM_DIR/bin/sourcemod.so" ]] && [[ ! -f "$SM_DIR/bin/sourcepawn.so" 
       rm -rf /tmp/sm_extract
       mkdir -p /tmp/sm_extract
       if tar -xzf sourcemod.tar.gz -C /tmp/sm_extract 2>&1; then
-        # Move contents, handling if there's a top-level directory
+        # Check what was extracted - look for subdirectories
         if [[ -d /tmp/sm_extract/sourcemod ]]; then
           # Has top-level sourcemod directory
-          cp -r /tmp/sm_extract/sourcemod/* "$SM_DIR/"
+          cp -r /tmp/sm_extract/sourcemod/* "$SM_DIR/" 2>&1 || true
+        elif [[ -d /tmp/sm_extract/addons/sourcemod ]]; then
+          # Has addons/sourcemod structure
+          cp -r /tmp/sm_extract/addons/sourcemod/* "$SM_DIR/" 2>&1 || true
         else
-          # No top-level directory, contents are directly in root
-          cp -r /tmp/sm_extract/* "$SM_DIR/"
+          # Contents are directly in root - copy bin and other files
+          cp -r /tmp/sm_extract/* "$SM_DIR/" 2>&1 || true
         fi
         rm -rf /tmp/sm_extract sourcemod.tar.gz
         echo "✓ SourceMod installed successfully"
       else
         echo "✗ Failed to extract SourceMod tarball"
-        file sourcemod.tar.gz
         exit 1
       fi
     else
       echo "✗ Downloaded file is empty or not found"
-      file sourcemod.tar.gz 2>&1
       exit 1
     fi
   else
@@ -87,24 +88,25 @@ if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
       rm -rf /tmp/mm_extract
       mkdir -p /tmp/mm_extract
       if tar -xzf metamod.tar.gz -C /tmp/mm_extract 2>&1; then
-        # Move contents, handling if there's a top-level directory
+        # Check what was extracted - look for subdirectories
         if [[ -d /tmp/mm_extract/metamod ]]; then
           # Has top-level metamod directory
-          cp -r /tmp/mm_extract/metamod/* "$MM_DIR/"
+          cp -r /tmp/mm_extract/metamod/* "$MM_DIR/" 2>&1 || true
+        elif [[ -d /tmp/mm_extract/addons/metamod ]]; then
+          # Has addons/metamod structure
+          cp -r /tmp/mm_extract/addons/metamod/* "$MM_DIR/" 2>&1 || true
         else
-          # No top-level directory, contents are directly in root
-          cp -r /tmp/mm_extract/* "$MM_DIR/"
+          # Contents are directly in root - copy bin and other files
+          cp -r /tmp/mm_extract/* "$MM_DIR/" 2>&1 || true
         fi
         rm -rf /tmp/mm_extract metamod.tar.gz
         echo "✓ MetaMod:Source installed successfully"
       else
         echo "✗ Failed to extract MetaMod tarball"
-        file metamod.tar.gz
         exit 1
       fi
     else
       echo "✗ Downloaded file is empty or not found"
-      file metamod.tar.gz 2>&1
       exit 1
     fi
   else
