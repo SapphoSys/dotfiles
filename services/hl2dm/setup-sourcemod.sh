@@ -126,6 +126,16 @@ echo "Verifying MetaMod 32-bit binary..."
 if [[ -f "$MM_DIR/bin/server.so" ]]; then
   echo "✓ MetaMod 32-bit binary confirmed"
   
+  # HL2DM has a game-specific binary: metamod.2.hl2dm.so
+  # Make sure it's being used by creating a symlink or copy to the expected location
+  if [[ -f "$MM_DIR/bin/metamod.2.hl2dm.so" ]]; then
+    echo "Found HL2DM-specific MetaMod binary, ensuring it's linked..."
+    # Some engines look for server_hl2dm.so
+    if [[ ! -L "$MM_DIR/bin/server_hl2dm.so" ]] && [[ ! -f "$MM_DIR/bin/server_hl2dm.so" ]]; then
+      ln -sf metamod.2.hl2dm.so "$MM_DIR/bin/server_hl2dm.so" 2>/dev/null || true
+    fi
+  fi
+  
   # Double-check that 64-bit directories don't exist (they would cause loading failures)
   if [[ -d "$MM_DIR/bin/linux64" ]]; then
     echo "⚠ Found 64-bit directory that should have been removed, cleaning up..."
@@ -134,28 +144,25 @@ if [[ -f "$MM_DIR/bin/server.so" ]]; then
 else
   echo "⚠ Warning: Could not find 32-bit MetaMod binary"
   echo "Available binaries:"
-  find "$MM_DIR/bin" -maxdepth 1 -name "*.so" 2>/dev/null | head -5 || true
+  find "$MM_DIR/bin" -maxdepth 1 -name "*.so" 2>/dev/null | head -10 || true
 fi
 
 # Copy SourceMod configuration files if they exist
 echo "=== Setting up MetaMod configuration ==="
-# Create metaplugins.ini to explicitly load the SourceMod plugin
-if [[ -d "$MM_DIR/plugins" ]]; then
-  MM_PLUGINS_CFG="$MM_DIR/plugins.cfg"
-  if [[ ! -f "$MM_PLUGINS_CFG" ]]; then
-    echo "Creating plugins.cfg..."
-    cat > "$MM_PLUGINS_CFG" << 'EOF'
-// MetaMod plugin configuration
-// Force SourceMod loading
-
-"Plugins"
-{
-	"sourcemod"	"addons/sourcemod/bin/sourcemod.so"
-}
-EOF
-    chmod 644 "$MM_PLUGINS_CFG"
-    echo "✓ Created MetaMod plugins.cfg"
+# Configure metaplugins.ini to load SourceMod
+MM_PLUGINS_INI="$MM_DIR/metaplugins.ini"
+if [[ -f "$MM_PLUGINS_INI" ]]; then
+  # Check if SourceMod is already in the config
+  if ! grep -q "sourcemod_mm" "$MM_PLUGINS_INI"; then
+    echo "Adding SourceMod to metaplugins.ini..."
+    # Append SourceMod plugin entry (without _i486.so extension as per metaplugins.ini format)
+    echo "addons/sourcemod/bin/sourcemod_mm" >> "$MM_PLUGINS_INI"
+    echo "✓ SourceMod plugin registered with MetaMod"
+  else
+    echo "✓ SourceMod already registered in metaplugins.ini"
   fi
+else
+  echo "⚠ metaplugins.ini not found - MetaMod plugin loading may not work"
 fi
 
 echo "=== Setting up SourceMod configuration ==="
