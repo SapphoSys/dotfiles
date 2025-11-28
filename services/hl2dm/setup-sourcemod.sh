@@ -115,6 +115,22 @@ fi
 echo "Setting permissions on addons directory..."
 chmod -R 755 "$ADDONSDIR" 2>&1 || true
 
+# Fix MetaMod binary - HL2DM is 32-bit, ensure we have the right binary
+if [[ -f "$MM_DIR/bin/linux64/server.so" ]] && [[ ! -f "$MM_DIR/bin/server.so" ]]; then
+  echo "Fixing MetaMod for 32-bit server..."
+  if [[ -f "$MM_DIR/bin/server.so.1" ]]; then
+    # Use the 32-bit version if it exists
+    cp "$MM_DIR/bin/server.so.1" "$MM_DIR/bin/server.so" 2>&1 || true
+  elif [[ -f "$MM_DIR/bin/server_i386.so" ]]; then
+    # Or the i386 version
+    cp "$MM_DIR/bin/server_i386.so" "$MM_DIR/bin/server.so" 2>&1 || true
+  else
+    echo "⚠ Warning: Could not find 32-bit MetaMod binary"
+    # List what we have
+    find "$MM_DIR/bin" -name "*.so*" 2>/dev/null | head -10 || true
+  fi
+fi
+
 # Copy SourceMod configuration files if they exist
 echo "=== Setting up SourceMod configuration ==="
 if [[ -d "$SM_DIR/configs" ]]; then
