@@ -34,6 +34,7 @@
     "d /var/lib/hl2dm/.steam 0755 root root -"
     "d /var/lib/hl2dm/.steam/sdk32 0755 root root -"
     "d /var/lib/hl2dm/Steam 0755 root root -"
+    "d /var/lib/hl2dm/scripts 0755 root root -"
   ];
 
   # Container-based HL2DM server using ich777's steamcmd docker image
@@ -61,13 +62,14 @@
       "/var/lib/hl2dm/serverfiles:/serverdata/serverfiles"
       "/var/lib/hl2dm/.steam:/serverdata/.steam"
       "/var/lib/hl2dm/Steam:/serverdata/Steam"
-      "${./entrypoint.sh}:/entrypoint.sh:ro"
+      "/var/lib/hl2dm/scripts:/serverdata/scripts"
+      "${./setup-sourcemod.sh}:/serverdata/scripts/startup.sh:ro"
       "${./configs/sourcemod.cfg}:/serverdata/sourcemod.cfg:ro"
       "${./configs/admins.cfg}:/serverdata/admins.cfg:ro"
     ];
 
-    # Use custom entrypoint to set up SDK and SourceMod before server starts
-    cmd = [ "/bin/bash" "/entrypoint.sh" ];
+    # Use default entrypoint (ich777 image handles it)
+    cmd = [];
 
     extraOptions = [
       "--restart=always"
