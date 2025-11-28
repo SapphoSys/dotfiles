@@ -62,8 +62,8 @@
       "/var/lib/hl2dm/.steam:/serverdata/.steam"
       "/var/lib/hl2dm/Steam:/serverdata/Steam"
       "${./entrypoint.sh}:/entrypoint.sh:ro"
-      "${./configs/sourcemod.cfg}:/serverdata/serverfiles/hl2mp/addons/sourcemod/configs/sourcemod.cfg:ro"
-      "${./configs/admins.cfg}:/serverdata/serverfiles/hl2mp/addons/sourcemod/configs/admins.cfg:ro"
+      "${./configs/sourcemod.cfg}:/serverdata/sourcemod.cfg:ro"
+      "${./configs/admins.cfg}:/serverdata/admins.cfg:ro"
     ];
 
     # Use custom entrypoint to set up SDK before server starts
