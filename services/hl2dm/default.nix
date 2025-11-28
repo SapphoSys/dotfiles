@@ -62,14 +62,13 @@
       "/var/lib/hl2dm/serverfiles:/serverdata/serverfiles"
       "/var/lib/hl2dm/.steam:/serverdata/.steam"
       "/var/lib/hl2dm/Steam:/serverdata/Steam"
-      "/var/lib/hl2dm/scripts:/serverdata/scripts"
-      "${./setup-sourcemod.sh}:/serverdata/scripts/startup.sh:ro"
+      "${./setup-sourcemod.sh}:/opt/custom/user.sh:ro"
       "${./configs/sourcemod.cfg}:/serverdata/sourcemod.cfg:ro"
       "${./configs/admins.cfg}:/serverdata/admins.cfg:ro"
     ];
 
     # Use default entrypoint (ich777 image handles it)
-    cmd = [];
+    cmd = [ ];
 
     extraOptions = [
       "--restart=always"
