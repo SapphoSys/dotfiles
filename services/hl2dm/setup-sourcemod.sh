@@ -89,6 +89,16 @@ if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
       if tar -xzf metamod.tar.gz -C "$SERVERDIR" 2>&1; then
         rm -f metamod.tar.gz
         
+        # IMPORTANT: Remove 64-bit directories immediately after extraction
+        # HL2DM is 32-bit only and will crash trying to load 64-bit binaries
+        if [[ -d "$MM_DIR/bin/linux64" ]]; then
+          echo "Removing 64-bit binaries from extraction..."
+          rm -rf "$MM_DIR/bin/linux64"
+        fi
+        if [[ -d "$MM_DIR/bin/linuxsteamrt64" ]]; then
+          rm -rf "$MM_DIR/bin/linuxsteamrt64"
+        fi
+        
         # Verify it worked
         if [[ -d "$MM_DIR/bin" ]] && [[ -f "$MM_DIR/bin/server.so" ]]; then
           echo "✓ MetaMod:Source installed successfully"
@@ -116,31 +126,45 @@ fi
 echo "Setting permissions on addons directory..."
 chmod -R 755 "$ADDONSDIR" 2>&1 || true
 
-# Fix MetaMod binary - HL2DM is 32-bit, so remove 64-bit directories to force 32-bit loading
-if [[ -d "$MM_DIR/bin/linux64" ]]; then
-  echo "Removing 64-bit MetaMod binaries (HL2DM is 32-bit only)..."
-  rm -rf "$MM_DIR/bin/linux64" 2>&1 || true
-fi
+# Fix MetaMod binary for 32-bit HL2DM
+# Ensure the 32-bit binary is accessible
+echo "Verifying MetaMod 32-bit binary..."
 
-if [[ -d "$MM_DIR/bin/linuxsteamrt64" ]]; then
-  echo "Removing SteamRT 64-bit MetaMod binaries..."
-  rm -rf "$MM_DIR/bin/linuxsteamrt64" 2>&1 || true
-fi
-
-# Check for 32-bit binary in different possible locations
 if [[ -f "$MM_DIR/bin/server.so" ]]; then
-  echo "✓ MetaMod 32-bit binary confirmed at $MM_DIR/bin/server.so"
-elif [[ -f "$MM_DIR/bin/linux32/server.so" ]]; then
-  echo "Found MetaMod 32-bit binary in linux32 subdirectory, copying to bin/"
-  cp "$MM_DIR/bin/linux32/server.so" "$MM_DIR/bin/server.so"
-  echo "✓ MetaMod 32-bit binary copied to $MM_DIR/bin/server.so"
+  echo "✓ MetaMod 32-bit binary confirmed"
+  
+  # Double-check that 64-bit directories don't exist (they would cause loading failures)
+  if [[ -d "$MM_DIR/bin/linux64" ]]; then
+    echo "⚠ Found 64-bit directory that should have been removed, cleaning up..."
+    rm -rf "$MM_DIR/bin/linux64"
+  fi
 else
   echo "⚠ Warning: Could not find 32-bit MetaMod binary"
   echo "Available binaries:"
-  find "$MM_DIR/bin" -name "*.so" 2>/dev/null | head -20 || true
+  find "$MM_DIR/bin" -maxdepth 1 -name "*.so" 2>/dev/null | head -5 || true
 fi
 
 # Copy SourceMod configuration files if they exist
+echo "=== Setting up MetaMod configuration ==="
+# Create metaplugins.ini to explicitly load the SourceMod plugin
+if [[ -d "$MM_DIR/plugins" ]]; then
+  MM_PLUGINS_CFG="$MM_DIR/plugins.cfg"
+  if [[ ! -f "$MM_PLUGINS_CFG" ]]; then
+    echo "Creating plugins.cfg..."
+    cat > "$MM_PLUGINS_CFG" << 'EOF'
+// MetaMod plugin configuration
+// Force SourceMod loading
+
+"Plugins"
+{
+	"sourcemod"	"addons/sourcemod/bin/sourcemod.so"
+}
+EOF
+    chmod 644 "$MM_PLUGINS_CFG"
+    echo "✓ Created MetaMod plugins.cfg"
+  fi
+fi
+
 echo "=== Setting up SourceMod configuration ==="
 if [[ -d "$SM_DIR/configs" ]]; then
   if [[ -f "/serverdata/sourcemod.cfg" ]]; then
