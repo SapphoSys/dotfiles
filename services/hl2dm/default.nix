@@ -34,8 +34,8 @@
     autoStart = true;
     autoRemoveOnStop = false;
     ports = [
-      "27015:27015/udp"
-      "27015:27015/tcp"
+      "27016:27015/udp"
+      "27016:27015/tcp"
     ];
 
     environment = {
@@ -115,7 +115,7 @@
     '';
   };
 
-  # Firewall configuration for game server
-  settings.firewall.allowedUDPPorts = [ 27015 ];
-  settings.firewall.allowedTCPPorts = [ 27015 ];
+  # Firewall configuration - testing L4 proxying
+  # settings.firewall.allowedUDPPorts = [ 27015 ];
+  # settings.firewall.allowedTCPPorts = [ 27015 ];
 }

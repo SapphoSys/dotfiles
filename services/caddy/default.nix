@@ -11,8 +11,9 @@
     package = pkgs.caddy.withPlugins {
       plugins = [
         "github.com/caddy-dns/bunny@v1.2.0"
+        "github.com/mholt/caddy-l4@v0.0.0-20240815195819-06266cc7a7f2"
       ];
-      hash = "sha256-OkyyPKPKu5C4cASU3r/Uw/vtCVMNRVBnAau4uu+WVp8=";
+      hash = "sha256-LeLqz0LQyKwFekx7w9LJvv8Qj8W0Ol1RYKn0NZN3Txc=";
     };
     environmentFile = config.age.secrets.caddy.path;
     globalConfig = ''
@@ -36,10 +37,33 @@
     '';
   };
 
+  # Layer 4 (TCP/UDP) proxying for game servers
+  services.caddy.layer4 = {
+    servers.hl2dm-proxy = {
+      listen = [ "0.0.0.0:27015" ];
+      routes = [
+        {
+          handle = [
+            {
+              handler = "proxy";
+              upstreams = [
+                { dial = [ "localhost:27016" ]; }
+              ];
+            }
+          ];
+        }
+      ];
+    };
+  };
+
   settings.firewall.allowedTCPPorts = [
     80
     443
+    27015
   ];
 
-  settings.firewall.allowedUDPPorts = [ 443 ];
+  settings.firewall.allowedUDPPorts = [
+    443
+    27015
+  ];
 }
