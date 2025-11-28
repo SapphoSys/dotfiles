@@ -66,12 +66,11 @@
       "${./configs/admins.cfg}:/serverdata/admins.cfg:ro"
     ];
 
-    # Use custom entrypoint to set up SDK before server starts
-    cmd = [ "/entrypoint.sh" ];
+    # Use custom entrypoint to set up SDK and SourceMod before server starts
+    cmd = [ "/bin/bash" "/entrypoint.sh" ];
 
     extraOptions = [
       "--restart=always"
-      "--entrypoint=/bin/bash"
     ];
   };
 

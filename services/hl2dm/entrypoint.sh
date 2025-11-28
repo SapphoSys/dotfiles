@@ -120,21 +120,46 @@ fi
 # Copy SourceMod configuration files if they exist
 echo "=== Setting up SourceMod configuration ==="
 if [[ -d "$SM_DIR/configs" ]]; then
+  echo "SourceMod configs directory found at: $SM_DIR/configs"
   echo "Copying SourceMod config files..."
   
   if [[ -f "/serverdata/sourcemod.cfg" ]]; then
-    cp -v "/serverdata/sourcemod.cfg" "$SM_DIR/configs/sourcemod.cfg" && echo "✓ Copied sourcemod.cfg"
+    echo "Copying /serverdata/sourcemod.cfg → $SM_DIR/configs/sourcemod.cfg"
+    if cp -v "/serverdata/sourcemod.cfg" "$SM_DIR/configs/sourcemod.cfg"; then
+      echo "✓ Copied sourcemod.cfg successfully"
+    else
+      echo "✗ Failed to copy sourcemod.cfg"
+    fi
+  else
+    echo "⚠ /serverdata/sourcemod.cfg not found"
   fi
   
   if [[ -f "/serverdata/admins.cfg" ]]; then
-    cp -v "/serverdata/admins.cfg" "$SM_DIR/configs/admins.cfg" && echo "✓ Copied admins.cfg"
+    echo "Copying /serverdata/admins.cfg → $SM_DIR/configs/admins.cfg"
+    if cp -v "/serverdata/admins.cfg" "$SM_DIR/configs/admins.cfg"; then
+      echo "✓ Copied admins.cfg successfully"
+    else
+      echo "✗ Failed to copy admins.cfg"
+    fi
+  else
+    echo "⚠ /serverdata/admins.cfg not found"
   fi
   
-  # Fix permissions
-  chmod 644 "$SM_DIR/configs/"*.cfg 2>/dev/null
+  # Fix permissions on the copied files (not the read-only mounts)
+  echo "Setting permissions on copied config files..."
+  chmod 644 "$SM_DIR/configs/"*.cfg 2>&1 | head -5
   echo "Config files ready"
+  
+  # Verify files exist in final location
+  echo "Verifying config files in place:"
+  ls -la "$SM_DIR/configs/"*.cfg 2>&1
 else
-  echo "Warning: SourceMod configs directory not found"
+  echo "✗ SourceMod configs directory not found at: $SM_DIR/configs"
+  echo "This might indicate SourceMod installation failed"
+  if [[ -d "$SM_DIR" ]]; then
+    echo "But SourceMod directory exists, contents:"
+    ls -la "$SM_DIR" 2>&1
+  fi
 fi
 
 echo "=== Proceeding with original entrypoint ==="
