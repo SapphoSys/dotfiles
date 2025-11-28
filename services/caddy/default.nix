@@ -27,39 +27,25 @@
           resolvers 9.9.9.9 149.112.112.112
         }
       }
+
       (common) {
         encode zstd gzip
+      }
+
+      {
+        layer4 {
+          0.0.0.0:27015 {
+            route {
+              proxy localhost:27016
+            }
+          }
+        }
       }
     '';
     logFormat = ''
       level debug
       format json
     '';
-    configFile = pkgs.writeText "caddy-layer4.json" (
-      builtins.toJSON {
-        apps = {
-          layer4 = {
-            servers = {
-              hl2dm-proxy = {
-                listen = [ "0.0.0.0:27015" ];
-                routes = [
-                  {
-                    handle = [
-                      {
-                        handler = "proxy";
-                        upstreams = [
-                          { dial = [ "localhost:27016" ]; }
-                        ];
-                      }
-                    ];
-                  }
-                ];
-              };
-            };
-          };
-        };
-      }
-    );
   };
 
   settings.firewall.allowedTCPPorts = [
