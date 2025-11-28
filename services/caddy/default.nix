@@ -35,25 +35,31 @@
       level debug
       format json
     '';
-  };
-
-  # Layer 4 (TCP/UDP) proxying for game servers
-  services.caddy.layer4 = {
-    servers.hl2dm-proxy = {
-      listen = [ "0.0.0.0:27015" ];
-      routes = [
-        {
-          handle = [
-            {
-              handler = "proxy";
-              upstreams = [
-                { dial = [ "localhost:27016" ]; }
-              ];
-            }
-          ];
-        }
-      ];
-    };
+    configFile = pkgs.writeText "caddy-layer4.json" (
+      builtins.toJSON {
+        apps = {
+          layer4 = {
+            servers = {
+              hl2dm-proxy = {
+                listen = [ "0.0.0.0:27015" ];
+                routes = [
+                  {
+                    handle = [
+                      {
+                        handler = "proxy";
+                        upstreams = [
+                          { dial = [ "localhost:27016" ]; }
+                        ];
+                      }
+                    ];
+                  }
+                ];
+              };
+            };
+          };
+        };
+      }
+    );
   };
 
   settings.firewall.allowedTCPPorts = [
