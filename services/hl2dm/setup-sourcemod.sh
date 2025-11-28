@@ -81,23 +81,16 @@ if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
   if wget --timeout=30 "https://mms.alliedmods.net/mmsdrop/2.0/$LATEST_MM" -O metamod.tar.gz 2>&1; then
     echo "Download completed, checking file..."
     if [[ -f metamod.tar.gz ]] && [[ -s metamod.tar.gz ]]; then
-      echo "Extracting MetaMod:Source..."
+      echo "Extracting MetaMod:Source (excluding 64-bit binaries)..."
       # Remove existing directory completely to avoid conflicts
       rm -rf "$MM_DIR"
       
-      # Extract directly into addons parent directory - the tar should have addons/metamod structure
-      if tar -xzf metamod.tar.gz -C "$SERVERDIR" 2>&1; then
+      # Extract directly into addons parent directory, excluding 64-bit directories
+      # HL2DM is 32-bit only, so we don't want the tar to extract linux64/
+      if tar -xzf metamod.tar.gz -C "$SERVERDIR" \
+          --exclude='addons/metamod/bin/linux64' \
+          --exclude='addons/metamod/bin/linuxsteamrt64' 2>&1; then
         rm -f metamod.tar.gz
-        
-        # IMPORTANT: Remove 64-bit directories immediately after extraction
-        # HL2DM is 32-bit only and will crash trying to load 64-bit binaries
-        if [[ -d "$MM_DIR/bin/linux64" ]]; then
-          echo "Removing 64-bit binaries from extraction..."
-          rm -rf "$MM_DIR/bin/linux64"
-        fi
-        if [[ -d "$MM_DIR/bin/linuxsteamrt64" ]]; then
-          rm -rf "$MM_DIR/bin/linuxsteamrt64"
-        fi
         
         # Verify it worked
         if [[ -d "$MM_DIR/bin" ]] && [[ -f "$MM_DIR/bin/server.so" ]]; then
