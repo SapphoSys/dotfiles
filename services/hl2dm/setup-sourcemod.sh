@@ -32,23 +32,20 @@ if [[ ! -f "$SM_DIR/bin/sourcemod.so" ]] && [[ ! -f "$SM_DIR/bin/sourcepawn.so" 
     echo "Download completed, checking file..."
     if [[ -f sourcemod.tar.gz ]] && [[ -s sourcemod.tar.gz ]]; then
       echo "Extracting SourceMod..."
-      # Extract to temp dir first to handle top-level directory
-      rm -rf /tmp/sm_extract
-      mkdir -p /tmp/sm_extract
-      if tar -xzf sourcemod.tar.gz -C /tmp/sm_extract 2>&1; then
-        # Check what was extracted - look for subdirectories
-        if [[ -d /tmp/sm_extract/sourcemod ]]; then
-          # Has top-level sourcemod directory
-          cp -r /tmp/sm_extract/sourcemod/* "$SM_DIR/" 2>&1 || true
-        elif [[ -d /tmp/sm_extract/addons/sourcemod ]]; then
-          # Has addons/sourcemod structure
-          cp -r /tmp/sm_extract/addons/sourcemod/* "$SM_DIR/" 2>&1 || true
+      # Remove existing directory completely to avoid conflicts
+      rm -rf "$SM_DIR"
+      
+      # Extract directly into addons parent directory - the tar should have addons/sourcemod structure
+      if tar -xzf sourcemod.tar.gz -C "$SERVERDIR" 2>&1; then
+        rm -f sourcemod.tar.gz
+        
+        # Verify it worked
+        if [[ -d "$SM_DIR/bin" ]] && [[ -f "$SM_DIR/bin/sourcemod.so" ]]; then
+          echo "✓ SourceMod installed successfully"
         else
-          # Contents are directly in root - copy bin and other files
-          cp -r /tmp/sm_extract/* "$SM_DIR/" 2>&1 || true
+          echo "⚠ SourceMod extracted but bin/sourcemod.so not found - may have different structure"
+          ls -la "$SM_DIR" 2>/dev/null || echo "Directory listing failed"
         fi
-        rm -rf /tmp/sm_extract sourcemod.tar.gz
-        echo "✓ SourceMod installed successfully"
       else
         echo "✗ Failed to extract SourceMod tarball"
         exit 1
@@ -84,23 +81,20 @@ if [[ ! -f "$MM_DIR/bin/server.so" ]]; then
     echo "Download completed, checking file..."
     if [[ -f metamod.tar.gz ]] && [[ -s metamod.tar.gz ]]; then
       echo "Extracting MetaMod:Source..."
-      # Extract to temp dir first to handle top-level directory
-      rm -rf /tmp/mm_extract
-      mkdir -p /tmp/mm_extract
-      if tar -xzf metamod.tar.gz -C /tmp/mm_extract 2>&1; then
-        # Check what was extracted - look for subdirectories
-        if [[ -d /tmp/mm_extract/metamod ]]; then
-          # Has top-level metamod directory
-          cp -r /tmp/mm_extract/metamod/* "$MM_DIR/" 2>&1 || true
-        elif [[ -d /tmp/mm_extract/addons/metamod ]]; then
-          # Has addons/metamod structure
-          cp -r /tmp/mm_extract/addons/metamod/* "$MM_DIR/" 2>&1 || true
+      # Remove existing directory completely to avoid conflicts
+      rm -rf "$MM_DIR"
+      
+      # Extract directly into addons parent directory - the tar should have addons/metamod structure
+      if tar -xzf metamod.tar.gz -C "$SERVERDIR" 2>&1; then
+        rm -f metamod.tar.gz
+        
+        # Verify it worked
+        if [[ -d "$MM_DIR/bin" ]] && [[ -f "$MM_DIR/bin/server.so" ]]; then
+          echo "✓ MetaMod:Source installed successfully"
         else
-          # Contents are directly in root - copy bin and other files
-          cp -r /tmp/mm_extract/* "$MM_DIR/" 2>&1 || true
+          echo "⚠ MetaMod:Source extracted but bin/server.so not found - may have different structure"
+          ls -la "$MM_DIR" 2>/dev/null || echo "Directory listing failed"
         fi
-        rm -rf /tmp/mm_extract metamod.tar.gz
-        echo "✓ MetaMod:Source installed successfully"
       else
         echo "✗ Failed to extract MetaMod tarball"
         exit 1
