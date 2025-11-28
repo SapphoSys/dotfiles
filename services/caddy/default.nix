@@ -13,7 +13,7 @@
         "github.com/caddy-dns/bunny@v1.2.0"
         "github.com/mholt/caddy-l4@master"
       ];
-      hash = "sha256-LeLqz0LQyKwFekx7w9LJvv8Qj8W0Ol1RYKn0NZN3Txc=";
+      hash = "sha256-R8o6ESYpFvTPgW0ZOEQ7G06by8yp5AwPJpmJYFOeX0A=";
     };
     environmentFile = config.age.secrets.caddy.path;
     globalConfig = ''
