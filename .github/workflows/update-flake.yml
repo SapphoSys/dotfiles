@@ -22,11 +22,12 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
-          pr-title: "chore(flake): update inputs"
-          pr-labels: |
-            dependencies
-            automated
-          git-author-name: github-actions[bot]
-          git-author-email: 41898282+github-actions[bot]@users.noreply.github.com
-          git-committer-name: github-actions[bot]
-          git-committer-email: 41898282+github-actions[bot]@users.noreply.github.com
+            pr-title: "chore(flake): update inputs"
+            commit-msg: "chore(flake): update inputs"
+            pr-labels: |
+              dependencies
+              automated
+            git-author-name: github-actions[bot]
+            git-author-email: 41898282+github-actions[bot]@users.noreply.github.com
+            git-committer-name: github-actions[bot]
+            git-committer-email: 41898282+github-actions[bot]@users.noreply.github.com
