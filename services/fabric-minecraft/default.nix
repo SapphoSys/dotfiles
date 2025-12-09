@@ -63,16 +63,6 @@
               url = "https://cdn.modrinth.com/data/OhduvhIc/versions/lCVEKyxE/veinminer-fabric-2.5.0.jar";
               sha512 = "0liivch5f11kdmw62mn4mx1x18jbwsixzmb8i01i8xdc9q3jaay607rpnlsyp1xs1fc2hlb5wm3sby8443gdx9fw1pwv27q3fp3n6r1";
             };
-
-            CalcMod = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/XoHTb2Ap/versions/tIJEZz19/calcmod-1.4.3%2Bfabric.1.21.9.jar";
-              sha512 = "1ww01sk6jd8s688l6l2i3vlwvsnqk3vmzhj3vkvqgxaki00lmfq5xm0r3zb410gsqa57d6ax38xla5xqnqchin1vspr9f511x5yi0yp";
-            };
-
-            Essential-Commands = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/6VdDUivB/versions/YyD8j5eB/essential_commands-0.38.6-mc1.21.9.jar";
-              sha512 = "37llb7wj755ld4aipzzi6hq8kn03iw7w4j4slsl35xhxzjsb33v0921f3s40nl0x2lzhjlphq4wyry938yfd8nsjmcwx71n3f7is8dc";
-            };
           }
         );
       };
