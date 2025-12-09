@@ -39,30 +39,30 @@
               sha512 = "2xh4f84hj080qwcmvi7b8p80spj6dlznmxvl2zra0qb264lsiv2lv2hym60q66hgjx3m7x173zmbj95rkydhzcj94kb2frz28nqkckr";
             };
 
-            No-Chat-Reports = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/qQyHxfxd/versions/78RjC1gi/NoChatReports-FABRIC-1.21.10-v2.16.0.jar";
-              sha512 = "1rwgjvhcd9asnlsg5vvw5c3h590wch6db0sjfrm81p35hrbwgxr2rlsnfkbrr1lmd1yrd67gxa6i5nmhl0cg74b5c0r10izyy2g5cir";
-            };
+            # No-Chat-Reports = pkgs.fetchurl {
+            #   url = "https://cdn.modrinth.com/data/qQyHxfxd/versions/78RjC1gi/NoChatReports-FABRIC-1.21.10-v2.16.0.jar";
+            #   sha512 = "1rwgjvhcd9asnlsg5vvw5c3h590wch6db0sjfrm81p35hrbwgxr2rlsnfkbrr1lmd1yrd67gxa6i5nmhl0cg74b5c0r10izyy2g5cir";
+            # };
 
-            Simple-Voice-Chat = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/BjR2lc4k/voicechat-fabric-1.21.10-2.6.6.jar";
-              sha512 = "2bi3rkb254jlvbmki2giaxv36kpv7i46xgndd3lxa9jmg3vghz8s3bgi7jkgna4xqfywhw48l32ysi2sicv9cwxpzmazp86165862zw";
-            };
+            # Simple-Voice-Chat = pkgs.fetchurl {
+            #   url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/BjR2lc4k/voicechat-fabric-1.21.10-2.6.6.jar";
+            #   sha512 = "2bi3rkb254jlvbmki2giaxv36kpv7i46xgndd3lxa9jmg3vghz8s3bgi7jkgna4xqfywhw48l32ysi2sicv9cwxpzmazp86165862zw";
+            # };
 
-            NetherPortalFix = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/nPZr02ET/versions/EQ03E7hB/netherportalfix-fabric-1.21.10-21.10.1.jar";
-              sha512 = "2c9dm0p3yba9a9nr5qnrlajifp544hcjm9rkxmfp191zbza6qs22gqw58r73q194qf1r42lsaqs1dfdk5hljjks934g54yfqilqb3bf";
-            };
+            # NetherPortalFix = pkgs.fetchurl {
+            #   url = "https://cdn.modrinth.com/data/nPZr02ET/versions/EQ03E7hB/netherportalfix-fabric-1.21.10-21.10.1.jar";
+            #   sha512 = "2c9dm0p3yba9a9nr5qnrlajifp544hcjm9rkxmfp191zbza6qs22gqw58r73q194qf1r42lsaqs1dfdk5hljjks934g54yfqilqb3bf";
+            # };
 
-            LetMeDespawn = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/vE2FN5qn/versions/bsbIiM1c/Letmedespawn-1.21.9-fabric-1.5.2b.jar";
-              sha512 = "008zkgannx5462f63ihd6rnjwzdmhv9y10nmc4230cy01m8cqlrq17625k6mjg6iv8lip75in1yrw58z0mipd8fmdndpxcgpghwl4kg";
-            };
+            # LetMeDespawn = pkgs.fetchurl {
+            #   url = "https://cdn.modrinth.com/data/vE2FN5qn/versions/bsbIiM1c/Letmedespawn-1.21.9-fabric-1.5.2b.jar";
+            #   sha512 = "008zkgannx5462f63ihd6rnjwzdmhv9y10nmc4230cy01m8cqlrq17625k6mjg6iv8lip75in1yrw58z0mipd8fmdndpxcgpghwl4kg";
+            # };
 
-            Veinminer = pkgs.fetchurl {
-              url = "https://cdn.modrinth.com/data/OhduvhIc/versions/lCVEKyxE/veinminer-fabric-2.5.0.jar";
-              sha512 = "0liivch5f11kdmw62mn4mx1x18jbwsixzmb8i01i8xdc9q3jaay607rpnlsyp1xs1fc2hlb5wm3sby8443gdx9fw1pwv27q3fp3n6r1";
-            };
+            # Veinminer = pkgs.fetchurl {
+            #   url = "https://cdn.modrinth.com/data/OhduvhIc/versions/lCVEKyxE/veinminer-fabric-2.5.0.jar";
+            #   sha512 = "0liivch5f11kdmw62mn4mx1x18jbwsixzmb8i01i8xdc9q3jaay607rpnlsyp1xs1fc2hlb5wm3sby8443gdx9fw1pwv27q3fp3n6r1";
+            # };
           }
         );
       };
