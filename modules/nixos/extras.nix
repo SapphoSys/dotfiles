@@ -1,6 +1,8 @@
 { inputs, ... }:
 
 {
+  nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+
   imports = [
     inputs.home-manager.nixosModules.home-manager
     inputs.ragenix.nixosModules.default
