@@ -85,7 +85,7 @@
         SapphicAngels = {
           uuid = "945d7491-ba43-422b-83a0-e637d788b6ba";
           level = 4;
-          bypassPlayerLimit = true;
+          bypassesPlayerLimit = true;
         };
       };
 
