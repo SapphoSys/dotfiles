@@ -62,6 +62,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## Minecraft server support
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin-login-items.url = "github:uncenter/nix-darwin-login-items";
   };
 

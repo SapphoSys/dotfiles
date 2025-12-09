@@ -4,6 +4,7 @@
     ./bluesky-pds
     ./caddy
     ./destiny-labeler
+    ./fabric-minecraft
     ./fail2ban
     ./hl2dm
     ./glance
