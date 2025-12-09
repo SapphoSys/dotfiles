@@ -73,6 +73,27 @@
               url = "https://cdn.modrinth.com/data/6VdDUivB/versions/YyD8j5eB/essential_commands-0.38.6-mc1.21.9.jar";
               sha512 = "37llb7wj755ld4aipzzi6hq8kn03iw7w4j4slsl35xhxzjsb33v0921f3s40nl0x2lzhjlphq4wyry938yfd8nsjmcwx71n3f7is8dc";
             };
+
+            # Libraries
+            Almanac = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/Gi02250Z/versions/7hyPzKCA/Almanac-1.21.9-x-fabric-1.5.0.jar";
+              sha512 = "3kjvskrc1fg5011zva873c7mryh7h11qrpjzwaj476ld51k84bf99rlyfrr403yrwrnh5nhci45cp4rmzb1952gxqsgvpr574krxhq3";
+            };
+
+            Balm = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/MBAkmtvl/versions/cU1Vn9qw/balm-fabric-1.21.10-21.10.8.jar";
+              sha512 = "0m3r6yd1lspdaijiky75bs95vjxzalhvlxvv106349cczpb0d13d1lafs55s8h8pw7d4vrnm6d2yzkngf2adxcr47rdc6ghjn1rljkl";
+            };
+
+            Kotlin = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/LcgnDDmT/fabric-language-kotlin-1.13.7%2Bkotlin.2.2.21.jar";
+              sha512 = "2ycfs2j57zbqdbv7b4mw3cymb1ayckv4s7k9jkb3mgpiz6difl9chwch0ir2xhq2bwx2aqypbgvc4vgms7n59lp01ginycdxfjahlq4";
+            };
+
+            Silk = pkgs.fetchurl {
+              url = "https://cdn.modrinth.com/data/aTaCgKLW/versions/2OisNxPN/silk-all-1.11.4.jar";
+              sha512 = "3b0bcrmqyld65arkrqv2x3ribmsnqcddpkbscka3h147fjjqhwr2s960c4dfsfb5s6lkhmfakby2rdccspr1pzyczv7kxq9k695wbkg";
+            };
           }
         );
       };
