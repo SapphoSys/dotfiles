@@ -89,7 +89,7 @@
         };
       };
 
-      jvmOpts = "-Xms4G -Xmx6G -XX:+UseG1GC -XX:MaxGCPauseMillis=200";
+      # jvmOpts = "-Xms4G -Xmx6G -XX:+UseG1GC -XX:MaxGCPauseMillis=200";
 
       serverProperties = {
         motd = "Sapphic Angels' Fabric Minecraft Server";
