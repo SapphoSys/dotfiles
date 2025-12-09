@@ -99,6 +99,7 @@
         shared = {
           modules = [ ./modules/base ];
           specialArgs = { inherit inputs; };
+          nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
         };
 
         perClass = class: {
