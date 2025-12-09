@@ -15,9 +15,6 @@ let
     atkinson-hyperlegible
     nerd-fonts.jetbrains-mono
 
-    # games
-    prismlauncher
-
     # notes
     obsidian
   ];

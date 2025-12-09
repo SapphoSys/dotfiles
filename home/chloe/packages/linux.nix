@@ -18,6 +18,7 @@ let
 
     # games
     xivlauncher
+    prismlauncher
 
     # messengers
     discord

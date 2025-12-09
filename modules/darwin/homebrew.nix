@@ -30,6 +30,7 @@
       "microsoft-teams"
       "mos"
       "music-presence"
+      "prismlauncher"
       "osu"
       "signal"
       "steam"
