@@ -1,7 +1,5 @@
 {
   config,
-  lib,
-  pkgs,
   ...
 }:
 
@@ -19,11 +17,11 @@
   };
 
   virtualisation.oci-containers.containers.sapphic-moe = {
-    image = "ghcr.io/sapphosys/sapphic-moe:latest";
+    image = "ghcr.io/sapphies/sapphic-moe:latest";
     pull = "always";
 
     login = {
-      username = "SapphoSys";
+      username = "sapphies";
       registry = "ghcr.io";
       passwordFile = config.age.secrets.ghcr-io-token.path;
     };
