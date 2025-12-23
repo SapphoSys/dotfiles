@@ -22,7 +22,7 @@
     extraConfig = ''
       import common
       import tls_bunny
-      reverse_proxy http://pocket-id:1411
+      reverse_proxy http://localhost:1411
     '';
   };
 }
