@@ -12,6 +12,7 @@
     ./lanyard
     ./ntfy
     ./outline
+    ./pocket-id
     ./sapphic-moe
   ];
 }
