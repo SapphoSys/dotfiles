@@ -34,13 +34,13 @@
       "osu"
       "signal"
       "steam"
+      "tailscale-app"
     ];
 
     # Mac App Store apps (requires mas-cli)
     masApps = {
       "WhatsApp" = 310633997;
       "Telegram" = 747648890;
-      "Tailscale" = 1475387142;
     };
   };
 }
