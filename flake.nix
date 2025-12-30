@@ -68,7 +68,7 @@
 
     ## Tangled Git platform
     tangled = {
-      url = "git+https://tangled.org/@tangled.org/core";
+      url = "git+https://tangled.org/tangled.org/core";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
