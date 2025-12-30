@@ -7,6 +7,7 @@ with pkgs;
   deno
   cloudflared
   bun
+  pnpm
 
   # other
   _1password-cli
