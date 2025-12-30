@@ -1,13 +1,12 @@
 {
   lib,
   config,
-  types,
   ...
 }:
 
 {
   options.hardware.bluetooth.enable = {
-    type = types.bool;
+    type = lib.types.bool;
     default = lib.stdenv.hostPlatform.isLinux;
     description = "Enable Bluetooth support.";
   };
