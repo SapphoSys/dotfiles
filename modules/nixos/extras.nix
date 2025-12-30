@@ -1,7 +1,10 @@
 { inputs, ... }:
 
 {
-  nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+  nixpkgs.overlays = [
+    inputs.nix-minecraft.overlay
+    (import inputs.vscode-insiders)
+  ];
 
   imports = [
     inputs.home-manager.nixosModules.home-manager
