@@ -33,9 +33,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## nix-darwin login items
+    darwin-login-items.url = "github:uncenter/nix-darwin-login-items";
+
     ## Nix Language Server
     nil = {
       url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ## Minecraft server support
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -57,14 +66,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## Tangled Git platform
     tangled = {
       url = "git+https://tangled.org/@tangled.org/core";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ## Minecraft server support
-    nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -73,8 +77,6 @@
       url = "github:auguwu/vscode-insiders-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    darwin-login-items.url = "github:uncenter/nix-darwin-login-items";
   };
 
   outputs =
