@@ -20,6 +20,7 @@ in
   "hl2dm-server.age".publicKeys = keys;
   "lanyard.age".publicKeys = keys;
   "minio.age".publicKeys = keys;
+  "nextcloud.age".publicKeys = keys;
   "ntfy.age".publicKeys = keys;
   "outline/client-secret.age".publicKeys = keys;
   "outline/minio-password.age".publicKeys = keys;
