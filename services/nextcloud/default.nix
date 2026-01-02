@@ -26,7 +26,7 @@
   services.nginx.virtualHosts."nc.sappho.systems".listen = [
     {
       addr = "127.0.0.1";
-      port = 7070;
+      port = 1800;
     }
   ];
 
@@ -34,7 +34,7 @@
     extraConfig = ''
       import common
       import tls_bunny
-      reverse_proxy http://localhost:7070
+      reverse_proxy http://localhost:1800
     '';
   };
 }
