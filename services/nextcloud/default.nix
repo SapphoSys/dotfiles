@@ -22,6 +22,14 @@
     extraAppsEnable = true;
   };
 
+  # Make nginx listen on 127.0.0.1:7070 for this vhost
+  services.nginx.virtualHosts."nc.sappho.systems".listen = [
+    {
+      addr = "127.0.0.1";
+      port = 7070;
+    }
+  ];
+
   services.caddy.virtualHosts."nc.sappho.systems" = {
     extraConfig = ''
       import common
