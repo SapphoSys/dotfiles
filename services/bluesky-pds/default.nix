@@ -14,6 +14,7 @@
     settings = {
       PDS_HOSTNAME = "pds.sappho.systems";
       PDS_PORT = 3333;
+      PDS_BLOB_UPLOAD_LIMIT = "200000000"; # 200 MB
       PDS_CRAWLERS = lib.concatStringsSep "," [
         "https://bsky.network"
         "https://relay.cerulea.blue"
